@@ -14,8 +14,11 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "disableSizeLimit": true,
+    "target": "es5",
     "module": "es2020",
+    //将TypeScript从可选类型语言转换为强制类型检验语言。这使得TypeScript离JavaScript的超集稍微远了一些将TypeScript从可选类型语言转换为强制类型检验语言。这使得TypeScript离JavaScript的超集稍微远了一些
+//    "noImplicitAny": true,
     "lib": [
       "es2018",
       "dom"
