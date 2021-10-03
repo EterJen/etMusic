@@ -7,7 +7,7 @@ import {SimpleStyle} from '../../../../data-types/types/simple.style';
   styleUrls: ['./wy-slider-handle.component.less']
 })
 export class WySliderHandleComponent implements OnInit, OnChanges {
-  @Input() sliderVertical = false;
+  @Input() sliderIsVertical = false;
   @Input() sliderOffset = 0;
   style: SimpleStyle = {};
 
@@ -16,7 +16,7 @@ export class WySliderHandleComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.sliderOffset) {
-      if (this.sliderVertical) {
+      if (this.sliderIsVertical) {
         this.style.bottom = this.sliderOffset + '%';
       } else {
         this.style.left = this.sliderOffset + '%';

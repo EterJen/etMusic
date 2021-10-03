@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
-import {nzSlideType} from '../../../../data-types/consts/nz.slider.consts';
+import {nzCarouselMoveType} from '../../../../data-types/consts/nz.consts';
 
 @Component({
   selector: 'app-wy-carousel',
@@ -10,7 +10,7 @@ import {nzSlideType} from '../../../../data-types/consts/nz.slider.consts';
 export class WyCarouselComponent implements OnInit {
   @ViewChild('wyCarouselDot', {static: true}) wyCarouselDot!: TemplateRef<any>;
   @Input() activeIdx = 0;
-  @Output() slideBtnClick = new EventEmitter<nzSlideType>();
+  @Output() slideBtnClick = new EventEmitter<nzCarouselMoveType>();
 
   constructor() {
   }
@@ -18,7 +18,7 @@ export class WyCarouselComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSlideBtnClick(type: nzSlideType): void {
+  onSlideBtnClick(type: nzCarouselMoveType): void {
     this.slideBtnClick.emit(type);
   }
 }

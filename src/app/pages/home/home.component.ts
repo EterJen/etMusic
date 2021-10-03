@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FromToInterface, NzCarouselComponent} from 'ng-zorro-antd/carousel';
-import {nzSlideType} from '../../data-types/consts/nz.slider.consts';
+import {nzCarouselMoveType} from '../../data-types/consts/nz.consts';
 import {Banner} from '../../data-types/entitys/Banner';
 import {Tag} from '../../data-types/entitys/Tag';
 import {SongSheet} from '../../data-types/entitys/SongSheet';
@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
   }
 
 
-  onSlideBtnClick(type: nzSlideType): void {
+  onSlideBtnClick(type: nzCarouselMoveType): void {
     this.nzCarousel[type]();
   }
 

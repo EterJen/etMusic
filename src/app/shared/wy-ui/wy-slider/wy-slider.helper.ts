@@ -1,7 +1,24 @@
-export function prohibitBubbling(e: Event): void {
+import {Observable} from 'rxjs';
+
+/*阻止事件冒泡*/
+export function prohibitEventBubbling(e: Event): void {
   e.stopPropagation();
   e.preventDefault();
 }
+
+export type sliderOffsetPositionType = number | null;
+
+export type WySliderDrag = {
+  start: 'touchstart' | 'mousedown';
+  move: 'touchmove' | 'mousemove';
+  end: 'touchend' | 'mouseup';
+  filter: (e: Event) => boolean;
+  pluckKey: string[];
+  dragStart$?: Observable<number>;
+  dragMoing$?: Observable<number>;
+  dragEnd$?: Observable<Event>;
+};
+
 
 export function getElementOffset(el: HTMLElement): { top: number, left: number } {
   const badRes = {
