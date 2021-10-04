@@ -10,7 +10,7 @@ import {SongSheetService} from '../../../../services/http/bz/songSheet.service';
 })
 export class SingleSheetComponent implements OnInit {
   @Input() songSheet!: SongSheet;
-  @Output() sheetPlay = new EventEmitter<number>();
+  @Output() playSheet = new EventEmitter<number>();
 
   constructor() {
   }
@@ -18,7 +18,7 @@ export class SingleSheetComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  playSheet(id: number): void {
-    this.sheetPlay.emit(id);
+  onPlaySheet(id: number): void {
+    this.playSheet.emit(id);
   }
 }

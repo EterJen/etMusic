@@ -8,6 +8,10 @@ import {Artist} from '../../data-types/entitys/Artist';
 import {ActivatedRoute} from '@angular/router';
 import {HomeRoutData} from './home-routing.module';
 import {SongSheetService} from '../../services/http/bz/songSheet.service';
+import {select, Store} from '@ngrx/store';
+import {setPlayList, setPlayListIndex, setSongList} from '../../app-store/player-store/action';
+import {AppStore} from '../../app-store/states-config';
+import {getPlayList} from '../../app-store/player-store/selector';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +28,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private songSheetService: SongSheetService
+    private songSheetService: SongSheetService,
+    private appStore: Store<AppStore>
   ) {
     this.route.data.subscribe((res: HomeRoutData) => {
       const resolverData = res.resolverData;
@@ -49,9 +54,19 @@ export class HomeComponent implements OnInit {
     this.nzCarousel[type]();
   }
 
-  onSheetPlay(sheetId: number): void {
-    this.songSheetService.parseSongSheet(sheetId).subscribe((res) => {
-      console.log(res);
+  onPlaySheet(sheetId: number): void {
+    this.songSheetService.parseSongSheet(sheetId).subscribe((list) => {
+      this.appStore.dispatch(setSongList({songList: list}));
+      this.appStore.dispatch(setPlayList({playList: list}));
+      this.appStore.dispatch(setPlayListIndex({playListIndex: 0}));
     });
+    /*
+    * TO-DO 使用防抖函数
+    * */
+    /*
+        this.appStore.pipe(select('player'), select(getPlayList)).subscribe(songs => {
+          console.log(songs);
+        });
+    */
   }
 }

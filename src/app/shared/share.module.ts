@@ -14,14 +14,14 @@ import {PipesModule} from './pipes/pipes.module';
     FormsModule,
     ZorroAntdModule,
     WyUiModule,
-    PipesModule
+    PipesModule,
   ],
   exports: [
     CommonModule,
     FormsModule,
     ZorroAntdModule,
     WyUiModule,
-    PipesModule
+    PipesModule,
   ]
 })
 export class ShareModule {

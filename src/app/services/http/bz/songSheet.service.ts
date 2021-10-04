@@ -63,6 +63,7 @@ export class SongSheetService {
         if (res) {
           return this.songService.parsePlaylistTrick(res);
         }
+        console.log('没有歌曲: parseSongSheet');
         return [];
       })
     );
