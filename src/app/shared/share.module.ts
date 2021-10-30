@@ -1,8 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {ZorroAntdModule} from '../zorro-antd/zorro-antd.module';
-import {WyUiModule} from './wy-ui/wy-ui.module';
+import {ZorroAntdModule} from './zorro-antd/zorro-antd.module';
 import {PipesModule} from './pipes/pipes.module';
 
 
@@ -13,16 +12,17 @@ import {PipesModule} from './pipes/pipes.module';
     CommonModule,
     FormsModule,
     ZorroAntdModule,
-    WyUiModule,
     PipesModule,
   ],
   exports: [
     CommonModule,
     FormsModule,
     ZorroAntdModule,
-    WyUiModule,
     PipesModule,
   ]
 })
+/*
+* 放业务性不强 但频繁需要引入的模块
+* */
 export class ShareModule {
 }

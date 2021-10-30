@@ -1,19 +1,23 @@
-import {Song} from '../../data-types/entitys/Song';
-import {Action, ActionReducerMap, createReducer, on} from '@ngrx/store';
-import {setPlaying, setPlayList, setPlayListIndex, setPlayMode, setSongList} from './action';
+import {Action,  createReducer, on} from '@ngrx/store';
+import {setPlaying, setPlayList, setPlayingIndex, setPlayMode, setSongList, optionalSet} from './action';
+import {PlaylistTrack} from '../../data-types/entitys/PlaylistTrack';
 
 export type PlayMode = {
-  type?: 'loop' | 'random' | 'singleLoop',
-  label?: '循环' | '随机' | '单曲循环',
+  type: 'loop' | 'random' | 'singleLoop',
+  label: '循环' | '随机' | '单曲循环',
+};
+export type PlayerStateOptional = {
+  playMode?: PlayMode; // 播放模式
+  songList?: PlaylistTrack[]; // 歌单
+  playList?: PlaylistTrack[]; // 播放别表
+  playingIndex?: number; // 播放索引
 };
 
-
 export type PlayerState = {
-  playing: boolean; // 播放状态
   playMode: PlayMode; // 播放模式
-  songList: Song[]; // 歌单
-  playList: Song[]; // 播放别表
-  playListIndex: number; // 播放索引
+  songList: PlaylistTrack[]; // 歌单
+  playList: PlaylistTrack[]; // 播放别表
+  playingIndex: number; // 播放索引
 };
 
 /*
@@ -21,11 +25,10 @@ export type PlayerState = {
 * 目标为：xxxState
 * */
 export const initialPlayerState: PlayerState = {
-  playing: false,
   playMode: {type: 'loop', label: '循环'},
   songList: [],
   playList: [],
-  playListIndex: -1,
+  playingIndex: -1,
 };
 
 
@@ -36,7 +39,8 @@ const reducer = createReducer(
   on(setPlayMode, (state, {playMode}) => ({...state, playMode})),
   on(setSongList, (state, {songList}) => ({...state, songList})),
   on(setPlayList, (state, {playList}) => ({...state, playList})),
-  on(setPlayListIndex, (state, {playListIndex}) => ({...state, playListIndex})),
+  on(setPlayingIndex, (state, {playingIndex}) => ({...state, playingIndex})),
+  on(optionalSet, (state, {...args}) => ({...state, ...args})),
 );
 
 

@@ -1,13 +1,14 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {SimpleStyle} from '../../../../data-types/types/simple.style';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation} from '@angular/core';
+import {SimpleStyle} from '../../../data-types/types/simple.style';
 
 @Component({
   selector: 'app-wy-slider-handle',
   templateUrl: './wy-slider-handle.component.html',
-  styleUrls: ['./wy-slider-handle.component.less']
+  styleUrls: ['./wy-slider-handle.component.less'],
 })
 export class WySliderHandleComponent implements OnInit, OnChanges {
   @Input() sliderIsVertical = false;
+  @Input() dragAble = false;
   @Input() sliderOffset = 0;
   style: SimpleStyle = {};
 

@@ -7,6 +7,7 @@ import {Observable, Subscriber} from 'rxjs';
 import SongDetail from '../../../data-types/results/SongDetail';
 import {map} from 'rxjs/internal/operators';
 import {environment} from 'src/environments/environment';
+import Lyric from '../../../data-types/entitys/Lyric';
 
 @Injectable({
   providedIn: ServiceModule
@@ -31,6 +32,19 @@ export class SongService {
     );
   }
 
+  getLyric(songId: number): Observable<Lyric | null> {
+    const params = new HttpParams().set('id', songId.toString());
+    return this.http.get<Lyric>(environment.baseUri + '/lyric', {params}).pipe<Lyric | null>(
+      map((res) => {
+        if (200 === res.code) {
+          return res;
+        } else {
+          return null;
+        }
+      })
+    );
+
+  }
 
   /*
  * 歌曲解析（原歌单只有trackid 现根据该id绑定对应歌曲）

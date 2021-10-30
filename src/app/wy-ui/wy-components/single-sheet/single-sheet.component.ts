@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SongSheet} from '../../../../data-types/entitys/SongSheet';
-import {SongSheetService} from '../../../../services/http/bz/songSheet.service';
+import {SongSheet} from '../../../data-types/entitys/SongSheet';
+import {SongSheetService} from '../../../services/http/bz/songSheet.service';
 
 @Component({
   selector: 'app-single-sheet',

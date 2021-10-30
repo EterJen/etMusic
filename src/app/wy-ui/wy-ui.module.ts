@@ -1,21 +1,19 @@
 import {NgModule} from '@angular/core';
-import {PipesModule} from '../pipes/pipes.module';
+import {PipesModule} from '../shared/pipes/pipes.module';
 import {WyComponentsModule} from './wy-components/wy-components.module';
 import {WyPlayerModule} from './wy-player/wy-player.module';
-import { WySliderComponent } from './wy-slider/wy-slider.component';
+import {ShareModule} from '../shared/share.module';
 
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [],
   imports: [
-    PipesModule,
     WyComponentsModule,
+    ShareModule,
     WyPlayerModule
   ],
   exports: [
-    PipesModule,
-    WyComponentsModule,
+    WyComponentsModule, // 其中组件会被其他模块使用 需要导出
     WyPlayerModule
   ]
 })

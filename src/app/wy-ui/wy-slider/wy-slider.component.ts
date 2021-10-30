@@ -2,10 +2,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef, forwardRef,
+  ElementRef, EventEmitter, forwardRef,
   Inject,
   Input, OnDestroy,
-  OnInit,
+  OnInit, Output,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -14,15 +14,19 @@ import {distinctUntilChanged, filter, merge, pluck, takeUntil} from 'rxjs/operat
 import {map, tap} from 'rxjs/internal/operators';
 import {DOCUMENT} from '@angular/common';
 import {getElementOffset, prohibitEventBubbling, sliderOffsetPositionType, WySliderDrag} from './wy-slider.helper';
-import {inArray} from '../../../utils/array';
-import {calcPresent, limitNumberInRange} from '../../../utils/number';
-import {wyySliderDragEvent} from '../../../data-types/consts/wyy.consts';
+import {inArray} from '../../utils/array';
+import {calcPresent, limitNumberInRange} from '../../utils/number';
+import {wyySliderDragEvent} from '../../data-types/consts/wyy.consts';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
   selector: 'app-wy-slider',
   templateUrl: './wy-slider.component.html',
   styleUrls: ['./wy-slider.component.less'],
+  /*
+  * ViewEncapsulation.Emulated 只在自己组件有效，不会被子组件（即使为None）同名样式覆盖也不会下沉子组件。 默认
+  * ViewEncapsulation.None 组件的样式会受外界影响，可以影响子组件；也可能被子组件同名样式覆盖掉(当子组件也为None)。
+  * */
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   /*注入token*/
@@ -30,21 +34,24 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => WySliderComponent),
-      multi: true
+      multi: true // 多实例注入
     }
   ]
 })
 export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccessor {
   @Input() public sliderIsVertical = false;
+  @Input() public dragAble = false;
   @Input() public minWidth = 0;
   @Input() public maxWidth = 100;
   @Input() public sliderBufferOffset = 0;
   /*
   * sliderOffset相当于value
   * */
+  @Output() sliderDragEnd = new EventEmitter<number>();
+  @Output() sliderDragStart = new EventEmitter<null>();
   public sliderOffset = 0;
-  private sliderDom!: HTMLDivElement;
   @ViewChild('wySlider', {static: true}) private wySlider!: ElementRef;
+  private sliderDom!: HTMLDivElement;
   private dragStart$!: Observable<number>;
   private dragMoving$!: Observable<number>;
   private dragEnd$!: Observable<Event>;
@@ -241,6 +248,10 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
 
   /*开始拖动*/
   private onDragStart(offsetPosition: number): void {
+    if (!this.dragAble) {
+      return;
+    }
+    this.sliderDragStart.emit(); // 告知父组件开始拖动
     this.toggleDragMoving(true);
     this.setOffsetPosition(offsetPosition);
   }
@@ -254,11 +265,7 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
     } else {
       /*滑动结束 取消两个订阅 提高性能*/
       this.unSubscribeDrag(['moving', 'end']);
-      /*
-      * 拖动过程中不要触发父组件刷新
-      * 调用被注册的方法 触发registerOnChange 刷新父dom
-      * */
-      this.onSliderOffsetPositionChange(this.sliderOffset);
+
     }
 
   }
@@ -267,6 +274,12 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
   private onDragMoving(offsetPosition: number): void {
     if (this.isDragMoving) {
       this.setOffsetPosition(offsetPosition);
+      /*
+     * 调用被注册的方法 触发registerOnChange 刷新父dom
+     * 如果需要做到拖动过程中不要触发父组件刷新 则放到onDragEnd方法中
+     * 此处需要及时返回百分比给父组件 一边拖动一边显示可至播放时间 提高用户使用体验
+     * */
+      this.onSliderOffsetPositionChange(this.sliderOffset);
       /*
       * 渲染策略为：ChangeDetectionStrategy.OnPush
       * 数据变化 并不会刷新dom
@@ -308,6 +321,7 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
 
   /*拖动结束*/
   private onDragEnd(): void {
+    this.sliderDragEnd.emit(this.sliderOffset); // 完成拖动 通知父组件
     this.toggleDragMoving(false);
     this.cdr.markForCheck();
   }

@@ -1,5 +1,5 @@
-<div class="wy-slider" #wySlider [class.wy-slider-vertical]="sliderIsVertical">
+<div class="wy-slider" #wySlider [class.drag-able]="dragAble" [class.wy-slider-vertical]="sliderIsVertical">
   <app-wy-slider-track [sliderIsVertical]="sliderIsVertical" [sliderBufferOffset]="sliderBufferOffset" [isBufferSlider]="true"></app-wy-slider-track>
   <app-wy-slider-track [sliderIsVertical]="sliderIsVertical" [sliderOffset]="sliderOffset"></app-wy-slider-track>
-  <app-wy-slider-handle [sliderIsVertical]="sliderIsVertical" [sliderOffset]="sliderOffset"></app-wy-slider-handle>
+  <app-wy-slider-handle [dragAble]="dragAble" [sliderIsVertical]="sliderIsVertical" [sliderOffset]="sliderOffset"></app-wy-slider-handle>
 </div>

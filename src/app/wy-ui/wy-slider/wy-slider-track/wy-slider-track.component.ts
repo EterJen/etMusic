@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {SimpleStyle} from '../../../../data-types/types/simple.style';
+import {SimpleStyle} from '../../../data-types/types/simple.style';
 
 @Component({
   selector: 'app-wy-slider-track',

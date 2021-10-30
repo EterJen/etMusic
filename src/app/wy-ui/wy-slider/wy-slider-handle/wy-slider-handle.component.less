@@ -1,0 +1,12 @@
+@import "src/assets/styles/mixins";
+.wy-slider-handle{
+  cursor: not-allowed;
+  &.drag-able{
+    cursor: pointer;
+  }
+}
+
+// 子组件视图包装为：encapsulation: ViewEncapsulation.None 时覆盖父组件同名样式
+.wy-slider{
+  display: none;
+}

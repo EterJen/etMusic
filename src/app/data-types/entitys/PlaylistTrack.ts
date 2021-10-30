@@ -2,7 +2,7 @@ import {Song} from './Song';
 
 export class PlaylistTrack {
   public name?: string;
-  public id?: number;
+  public id!: number;
   public pst?: number;
   public t?: number;
   public song?: Song;
@@ -14,9 +14,9 @@ export class PlaylistTrack {
   public v?: number;
   public crbt?: any;
   public cf?: string;
-  public al?: SongAl;
+  public al!: SongAl;
   /*dt时长*/
-  public dt?: number;
+  public dt!: number;
   public h?: SongH;
   public m?: SongM;
   public l?: SongL;
@@ -75,7 +75,7 @@ export class SongAr {
 export class SongAl {
   public id?: number;
   public name?: string;
-  public picUrl?: string;
+  public picUrl!: string;
   public pic?: number;
 }
 

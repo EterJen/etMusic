@@ -33,7 +33,7 @@ export class HomeResolverData {
 }
 
 /*
-* 路由守卫 路由完才传递数据 防止白页面
+* 路由守卫 路由完才传递数据 防止{{}}，白页面 (页面渲染先于数据)
 * */
 @Injectable()
 export class HomeResolver implements Resolve<HomeResolverData> {

@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {SingleSheetComponent} from './single-sheet/single-sheet.component';
-import {PipesModule} from '../../pipes/pipes.module';
+import {PipesModule} from '../../shared/pipes/pipes.module';
 
 
 @NgModule({

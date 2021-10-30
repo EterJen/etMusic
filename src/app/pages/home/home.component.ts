@@ -8,10 +8,8 @@ import {Artist} from '../../data-types/entitys/Artist';
 import {ActivatedRoute} from '@angular/router';
 import {HomeRoutData} from './home-routing.module';
 import {SongSheetService} from '../../services/http/bz/songSheet.service';
-import {select, Store} from '@ngrx/store';
-import {setPlayList, setPlayListIndex, setSongList} from '../../app-store/player-store/action';
-import {AppStore} from '../../app-store/states-config';
-import {getPlayList} from '../../app-store/player-store/selector';
+import * as _ from 'lodash';
+import {PlayerStoreService} from '../../app-store/player-store/player-store.service';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +27,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private songSheetService: SongSheetService,
-    private appStore: Store<AppStore>
+    private playerStoreService: PlayerStoreService,
   ) {
     this.route.data.subscribe((res: HomeRoutData) => {
       const resolverData = res.resolverData;
@@ -56,17 +54,19 @@ export class HomeComponent implements OnInit {
 
   onPlaySheet(sheetId: number): void {
     this.songSheetService.parseSongSheet(sheetId).subscribe((list) => {
-      this.appStore.dispatch(setSongList({songList: list}));
-      this.appStore.dispatch(setPlayList({playList: list}));
-      this.appStore.dispatch(setPlayListIndex({playListIndex: 0}));
+      const playlistTracks = _.cloneDeep(list);
+      for (const playlistTrack of playlistTracks) {
+        playlistTrack.id = playlistTrack.id + 100;
+      }
+      list.push(...playlistTracks); // 数据不够 复制测试用
+      console.log(list);
+
+      /*
+      * 改变多个属性建议在一次操作内完成， 原子性操作 防止脏数据产生
+      * */
+      this.playerStoreService.play(list, 0);
     });
-    /*
-    * TO-DO 使用防抖函数
-    * */
-    /*
-        this.appStore.pipe(select('player'), select(getPlayList)).subscribe(songs => {
-          console.log(songs);
-        });
-    */
   }
+
+
 }

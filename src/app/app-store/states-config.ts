@@ -5,7 +5,7 @@ import {PlayerState, playerStateReducer} from './player-store/reducer';
 * AppStore key 与 appReducers key 保持一致
 * */
 export type AppStore = {
-  player: PlayerState | any,
+  player: any, // any保证注入和取出时key相同
 };
 
 export const appReducers: AppStore = {

@@ -46,7 +46,8 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "rxjs/internal/operators"
+              "rxjs/internal/operators",
+              "lodash"
             ],
             "outputPath": "dist/etMusic",
             "index": "src/index.html",
