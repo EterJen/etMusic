@@ -1,4 +1,8 @@
-<div class="m-player" (click)="$event.stopPropagation()">
+<div
+  appClickOutSide
+  [clickOutSideListenAble]="showVolumePanel || showPlaylistPanel"
+  (clickOutSide)="onElementClickOutSide()"
+  class="m-player">
   <div class="lock">
     <div class="left"></div>
   </div>

@@ -42,6 +42,30 @@ export class PlayerStoreService {
     });
   }
 
+  public watchPlayMode(): Observable<PlayMode> {
+    return this.playerStore.pipe(select(getPlayMode));
+  }
+
+  watchSongList(): Observable<PlaylistTrack[]> {
+    return this.playerStore.pipe(select(getSongList));
+  }
+
+  watchPlayList(): Observable<PlaylistTrack[]> {
+    return this.playerStore.pipe(select(getPlayList));
+  }
+
+  watchPlayingIndex(): Observable<number> {
+    return this.playerStore.pipe(select(getPlayingIndex));
+  }
+
+  watchPlayingSong(): Observable<PlaylistTrack> {
+    return this.playerStore.pipe(select(getPlayingSong));
+  }
+
+  watchSongListIndex(): Observable<number> {
+    return this.playerStore.pipe(select(getSongListIndex));
+  }
+
   play(songList: PlaylistTrack[], playingIndex: number): void {
     let newPlayList = [];
     if (this.playMode.type === 'random') {
@@ -70,29 +94,6 @@ export class PlayerStoreService {
     }
   }
 
-  public watchPlayMode(): Observable<PlayMode> {
-    return this.playerStore.pipe(select(getPlayMode));
-  }
-
-  watchSongList(): Observable<PlaylistTrack[]> {
-    return this.playerStore.pipe(select(getSongList));
-  }
-
-  watchPlayList(): Observable<PlaylistTrack[]> {
-    return this.playerStore.pipe(select(getPlayList));
-  }
-
-  watchPlayingIndex(): Observable<number> {
-    return this.playerStore.pipe(select(getPlayingIndex));
-  }
-
-  watchPlayingSong(): Observable<PlaylistTrack> {
-    return this.playerStore.pipe(select(getPlayingSong));
-  }
-
-  watchSongListIndex(): Observable<number> {
-    return this.playerStore.pipe(select(getSongListIndex));
-  }
 
   playByIndex(newIndex: number): void {
     this.appStore.dispatch(setPlayingIndex({playingIndex: newIndex}));

@@ -1,16 +1,16 @@
 import {NgModule} from '@angular/core';
-import {PlayCountPipe} from './play-count.pipe';
-import { FormatTimePipe } from './format-time.pipe';
+import {FormatPlayCountPipe} from './format/format-play-count.pipe';
+import { FormatTimePipe } from './format/format-time.pipe';
 
 
 @NgModule({
   declarations: [
-    PlayCountPipe,
+    FormatPlayCountPipe,
     FormatTimePipe
   ],
   imports: [],
   exports: [
-    PlayCountPipe,
+    FormatPlayCountPipe,
     FormatTimePipe
   ]
 })

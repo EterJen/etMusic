@@ -20,7 +20,9 @@
                 <a href="">热门推荐</a>
               </h2>
               <nav>
-                <a *ngFor="let x of hotTags; index as idx">{{x.name}}</a>
+                <a *ngFor="let x of hotTags; index as idx"
+                   routerLink="/song-sheet"
+                   [queryParams]="{cat: x.name}">{{x.name}}</a>
               </nav>
             </div>
             <a href="">

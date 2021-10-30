@@ -12,7 +12,6 @@ import { BetterScrollComponent } from './better-scroll/better-scroll.component';
     BetterScrollComponent
   ],
   imports: [
-    CommonModule
   ]
 })
 export class ComponentsModule { }

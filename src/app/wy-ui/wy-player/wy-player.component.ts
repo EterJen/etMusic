@@ -207,7 +207,15 @@ export class WyPlayerComponent implements OnInit {
     this.togglePanel(this.showVolumePanel);
   }
 
+  /*
+  * 弃用
+  * 判断是否点击了播放器外部
+  * 已用指令方案替代 采用事件驱动
+  * */
   togglePanel(showAble: boolean): void {
+    if (true) {
+      return;
+    }
     if (showAble) {
       this.subscribeDocumentClick();
     } else {
@@ -268,6 +276,10 @@ export class WyPlayerComponent implements OnInit {
     this.duration = this.playingSong?.dt ? this.playingSong.dt / 1000 : 0;
   }
 
+  onElementClickOutSide(): void {
+    this.showVolumePanel = false;
+    this.showPlaylistPanel = false;
+  }
 
   private stopPlay(): void {
     this.audioEl?.pause();
@@ -278,7 +290,6 @@ export class WyPlayerComponent implements OnInit {
     this.isPlaying = false;
     this.duration = 0;
   }
-
 
   private subscribeDocumentClick(): void {
     if (!this.documentClickSubscription) {

@@ -1,9 +1,9 @@
 import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
-  name: 'playCount'
+  name: 'formatPlayCount'
 })
-export class PlayCountPipe implements PipeTransform {
+export class FormatPlayCountPipe implements PipeTransform {
 
   transform(src: number): string | number {
     if (src > 10000) {

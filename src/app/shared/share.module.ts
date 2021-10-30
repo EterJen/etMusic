@@ -3,11 +3,10 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {ZorroAntdModule} from './zorro-antd/zorro-antd.module';
 import {PipesModule} from './pipes/pipes.module';
+import {DirectivesModule} from './directives/directives.module';
 
 
 @NgModule({
-  declarations: [
-  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -19,6 +18,7 @@ import {PipesModule} from './pipes/pipes.module';
     FormsModule,
     ZorroAntdModule,
     PipesModule,
+    DirectivesModule
   ]
 })
 /*

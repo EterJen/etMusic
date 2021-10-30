@@ -4,7 +4,7 @@
     <div class="bottom">
       <div class="num">
         <i class="icon erji"></i>
-        <span>{{songSheet.playCount | playCount}}</span>
+        <span>{{songSheet.playCount | formatPlayCount}}</span>
       </div>
       <i class="icon play" (click)="onPlaySheet(songSheet.id)"></i>
     </div>
