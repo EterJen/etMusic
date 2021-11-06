@@ -7,7 +7,7 @@ import {SongSheet} from '../../data-types/entitys/SongSheet';
 import {Artist} from '../../data-types/entitys/Artist';
 import {ActivatedRoute} from '@angular/router';
 import {HomeRoutData} from './home-routing.module';
-import {SongSheetService} from '../../services/http/bz/songSheet.service';
+import {SongSheetService} from '../../services/bz/songSheet.service';
 import * as _ from 'lodash';
 import {PlayerStoreService} from '../../app-store/player-store/player-store.service';
 
@@ -53,19 +53,7 @@ export class HomeComponent implements OnInit {
   }
 
   onPlaySheet(sheetId: number): void {
-    this.songSheetService.parseSongSheet(sheetId).subscribe((list) => {
-      const playlistTracks = _.cloneDeep(list);
-      for (const playlistTrack of playlistTracks) {
-        playlistTrack.id = playlistTrack.id + 100;
-      }
-      list.push(...playlistTracks); // 数据不够 复制测试用
-      console.log(list);
-
-      /*
-      * 改变多个属性建议在一次操作内完成， 原子性操作 防止脏数据产生
-      * */
-      this.playerStoreService.play(list, 0);
-    });
+    this.songSheetService.playSheet(sheetId);
   }
 
 

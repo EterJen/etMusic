@@ -1,7 +1,7 @@
 import {PlaylistTrack} from './PlaylistTrack';
 
 export class Playlist {
-  public id?: number;
+  public id!: number;
   public name?: string;
   public coverImgId?: number;
   public coverImgUrl?: string;
@@ -18,7 +18,7 @@ export class Playlist {
   public privacy?: number;
   public trackUpdateTime?: number;
   public commentThreadId?: string;
-  public playCount?: number;
+  public playCount!: number;
   public trackNumberUpdateTime?: number;
   public subscribedCount?: number;
   public cloudTrackCount?: number;

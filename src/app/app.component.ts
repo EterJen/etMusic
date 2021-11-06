@@ -9,6 +9,10 @@ import {map, tap} from 'rxjs/internal/operators';
 })
 export class AppComponent {
   title = 'etMusic';
+  menu = [
+    {label: '发现', path: '/home'},
+    {label: '歌单', path: '/song-sheet'},
+  ];
 
   constructor() {
     // this.f1();

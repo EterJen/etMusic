@@ -11,7 +11,7 @@ import {
 import {PlaylistTrack} from '../../../data-types/entitys/PlaylistTrack';
 import {PlayMode} from '../../../app-store/player-store/reducer';
 import {simpleFindIndex} from '../../../utils/array';
-import {SongService} from '../../../services/http/bz/song.service';
+import {SongService} from '../../../services/bz/song.service';
 import {PlayingLine, WyLyric} from './wy-lyric';
 import {Subscription, timer} from 'rxjs';
 import {PlayerStoreService} from '../../../app-store/player-store/player-store.service';

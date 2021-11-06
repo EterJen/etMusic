@@ -1,0 +1,28 @@
+<div class="sheet wrap feature-wrap">
+  <div class="list-r">
+    <div class="top">
+      <div class="cat">
+        <span>{{topQueryParams.cat}}</span>
+      </div>
+      <nz-radio-group nzButtonStyle="solid" [(ngModel)]="topQueryParams.order" (ngModelChange)="onOrderChange()">
+        <label nz-radio-button nzValue="hot">热门</label>
+        <label nz-radio-button nzValue="new">最新</label>
+      </nz-radio-group>
+    </div>
+    <div class="list">
+      <app-single-sheet *ngFor="let item of topPlaylists?.playlists" [playlist]="item"
+                        (playSheet)="onPlaySheet($event)"
+                        class="sheet-item">
+      </app-single-sheet>
+    </div>
+    <nz-pagination
+      class="pagination"
+      [nzPageSize]="topQueryParams.limit"
+      [(nzPageIndex)]="topQueryParams.offset"
+      [nzTotal]="topPlaylists?.total"
+      (nzPageIndexChange)="queryTopPlaylists()"
+    >
+
+    </nz-pagination>
+  </div>
+</div>
