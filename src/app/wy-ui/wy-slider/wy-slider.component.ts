@@ -13,11 +13,12 @@ import {fromEvent, Observable, of, Subscription} from 'rxjs';
 import {distinctUntilChanged, filter, merge, pluck, takeUntil} from 'rxjs/operators';
 import {map, tap} from 'rxjs/internal/operators';
 import {DOCUMENT} from '@angular/common';
-import {getElementOffset, prohibitEventBubbling, sliderOffsetPositionType, WySliderDrag} from './wy-slider.helper';
-import {inArray} from '../../utils/array';
+import {getElementOffset,  sliderOffsetPositionType, WySliderDrag} from './wy-slider.helper';
+import {ArrayUtils} from '../../utils/ArrayUtils';
 import {calcPresent, limitNumberInRange} from '../../utils/number';
 import {wyySliderDragEvent} from '../../data-types/consts/wyy.consts';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {EventUtils} from '../../utils/EventUtils';
 
 @Component({
   selector: 'app-wy-slider',
@@ -141,7 +142,7 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
     for (const drag of wySliderDrags) {
       drag.dragStart$ = fromEvent(this.sliderDom, drag.start).pipe(
         filter(drag.filter),
-        tap(prohibitEventBubbling),
+        tap(EventUtils.prohibitEventBubbling),
         pluck<Event, number>(...drag.pluckKey),
         map((rawPosition: number) => {
           return this.calcOffsetPosition(rawPosition);
@@ -150,7 +151,7 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
       drag.dragEnd$ = fromEvent(this.document, drag.end);
       drag.dragMoing$ = fromEvent(this.sliderDom, drag.move).pipe(
         filter(drag.filter),
-        tap(prohibitEventBubbling),
+        tap(EventUtils.prohibitEventBubbling),
         pluck<Event, number>(...drag.pluckKey),
         distinctUntilChanged(),
         map((rawPosition: number) => {
@@ -211,7 +212,7 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
   }
 
   private wyySliderDragEventContain(events: wyySliderDragEvent[], event: wyySliderDragEvent): boolean {
-    return inArray(events, event);
+    return ArrayUtils.inArray(events, event);
   }
 
   /*订阅*/

@@ -1,12 +1,12 @@
 <ng-container>
-  <a class="cover">
+  <a class="cover" (click)="showSheet()">
     <img [src]="picUrl" [alt]="realSheet.name">
     <div class="bottom">
       <div class="num">
         <i class="icon erji"></i>
         <span>{{realSheet.playCount | formatPlayCount}}</span>
       </div>
-      <i class="icon play" (click)="onPlaySheet(realSheet.id)"></i>
+      <i class="icon play" (click)="onPlaySheet(realSheet.id, $event)"></i>
     </div>
   </a>
   <span class="dec">{{realSheet.name}}</span>

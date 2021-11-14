@@ -6,7 +6,6 @@ import {SongSheet} from '../../data-types/entitys/SongSheet';
 import Personalized from '../../data-types/results/Personalized';
 import {NeteaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
 import {SongService} from './song.service';
-import {Playlist} from '../../data-types/entitys/Playlist';
 import SongSheetDetail from '../../data-types/results/SongSheetDetail';
 import {PlaylistTrack} from '../../data-types/entitys/PlaylistTrack';
 import * as _ from 'lodash';
@@ -42,16 +41,9 @@ export class SongSheetService {
   /*
    * 歌单详情
    * */
-  getSongSheetDetail(sheetId: number): Observable<Playlist | null> {
+  getSongSheetDetail(sheetId: number): Observable<SongSheetDetail> {
     const params = new HttpParams().set('id', sheetId.toString());
-    return this.http.get<SongSheetDetail>(this.neteaseCloudMusicApiPrefix + '/playlist/detail', {params}).pipe<Playlist | null>(
-      map((res) => {
-        if (200 === res.code && res.playlist) {
-          return res.playlist;
-        }
-        return null;
-      })
-    );
+    return this.http.get<SongSheetDetail>(this.neteaseCloudMusicApiPrefix + '/playlist/detail', {params});
   }
 
   /*
@@ -60,13 +52,16 @@ export class SongSheetService {
   parseSongSheet(sheetId: number): Observable<PlaylistTrack[]> {
     return this.getSongSheetDetail(sheetId).pipe(
       map((res => {
+        return res?.playlist;
+      })),
+      map((res => {
         return res?.tracks;
       })),
       switchMap(res => {
         if (res) {
           return this.songService.parsePlaylistTrick(res);
         }
-        console.log('没有歌曲: when playSongSheet');
+        console.log('没有歌曲 playlist.tracks : when parseSongSheet');
         return of([]);
       })
     );
@@ -74,12 +69,13 @@ export class SongSheetService {
 
   playSheet(sheetId: number): void {
     this.parseSongSheet(sheetId).subscribe((list) => {
-      const playlistTracks = _.cloneDeep(list);
-      for (const playlistTrack of playlistTracks) {
-        playlistTrack.id = playlistTrack.id + 100;
-      }
-      list.push(...playlistTracks); // 数据不够 复制测试用
-      console.log(list);
+      // 数据不够 复制测试用
+      /*  const playlistTracks = _.cloneDeep(list);
+        for (const playlistTrack of playlistTracks) {
+          playlistTrack.id = playlistTrack.id + 100;
+        }
+        list.push(...playlistTracks);
+        console.log(list);*/
 
       /*
       * 改变多个属性建议在一次操作内完成， 原子性操作 防止脏数据产生

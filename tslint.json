@@ -108,7 +108,8 @@
       "options": [
         "ban-keywords",
         "check-format",
-        "allow-pascal-case"
+        "allow-pascal-case", // 帕斯卡拼写法首字母大写
+        "allow-snake-case" // 下划线将单词连接 蛇形命名法
       ]
     },
     "whitespace": {

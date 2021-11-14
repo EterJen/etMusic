@@ -14,7 +14,7 @@ import {PlayerStoreService} from '../../app-store/player-store/player-store.serv
 export class WyPlayerComponent implements OnInit {
 
   public playPercent = 0;
-  public volumePercent = 6;
+  public volumePercent = 3;
   public playBufferPercent = 0;
   public songList: PlaylistTrack[] = [];
   public playList: PlaylistTrack[] = [];

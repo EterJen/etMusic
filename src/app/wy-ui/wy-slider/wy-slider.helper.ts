@@ -1,10 +1,5 @@
 import {Observable} from 'rxjs';
 
-/*阻止事件冒泡*/
-export function prohibitEventBubbling(e: Event): void {
-  e.stopPropagation();
-  e.preventDefault();
-}
 
 export type sliderOffsetPositionType = number | null;
 

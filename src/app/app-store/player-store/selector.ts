@@ -1,7 +1,7 @@
 import { PlayerState, PlayMode} from './reducer';
 import {createSelector, props} from '@ngrx/store';
 import {PlaylistTrack} from '../../data-types/entitys/PlaylistTrack';
-import {simpleFindIndex} from '../../utils/array';
+import {ArrayUtils} from '../../utils/ArrayUtils';
 
 /*
 * 官网使用了接口 估计目的是兼容别的state
@@ -12,6 +12,7 @@ function selectPlayerState(playerState: PlayerState): PlayerState {
 }
 
 
+export const getPlayerState = createSelector<PlayerState, PlayerState, PlayerState>(selectPlayerState, (playerState: PlayerState) => playerState);
 export const getPlayMode = createSelector<PlayerState, PlayerState, PlayMode>(selectPlayerState, (playerState: PlayerState) => playerState.playMode);
 export const getSongList = createSelector<PlayerState, PlayerState, PlaylistTrack[]>(selectPlayerState, (playerState: PlayerState) => playerState.songList);
 export const getPlayList = createSelector<PlayerState, PlayerState, PlaylistTrack[]>(selectPlayerState, (playerState: PlayerState) => playerState.playList);
@@ -19,7 +20,7 @@ export const getPlayingIndex = createSelector<PlayerState, PlayerState, number>(
 export const getPlayingSong = createSelector<PlayerState, PlayerState, PlaylistTrack>(selectPlayerState, (playerState: PlayerState) => playerState.playList[playerState.playingIndex]);
 export const getSongListIndex = createSelector<PlayerState, PlayerState, number>(selectPlayerState, (playerState: PlayerState) => {
   if (playerState.playMode.type === 'random') {
-    return simpleFindIndex(playerState.songList, playerState.playList[playerState.playingIndex]);
+    return ArrayUtils.simpleFindIndex(playerState.songList, playerState.playList[playerState.playingIndex]);
   } else {
     return playerState.playingIndex;
   }

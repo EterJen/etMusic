@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import {PlaylistTrack} from '../../../data-types/entitys/PlaylistTrack';
 import {PlayMode} from '../../../app-store/player-store/reducer';
-import {simpleFindIndex} from '../../../utils/array';
+import {ArrayUtils} from '../../../utils/ArrayUtils';
 import {SongService} from '../../../services/bz/song.service';
 import {PlayingLine, WyLyric} from './wy-lyric';
 import {Subscription, timer} from 'rxjs';
@@ -95,7 +95,7 @@ export class WyPlayListPanelComponent implements OnInit, OnChanges, AfterViewIni
   onChangeSong(i: number): void {
     let newPlayingIndex = i;
     if (this.playMode.type === 'random') {
-      newPlayingIndex = simpleFindIndex(this.playList, this.songList[i]);
+      newPlayingIndex = ArrayUtils.simpleFindIndex(this.playList, this.songList[i]);
     }
     this.changeSong.emit(newPlayingIndex);
   }

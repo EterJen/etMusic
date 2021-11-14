@@ -2,7 +2,9 @@ import {NgModule} from '@angular/core';
 import {HomeModule} from './home/home.module';
 import {ShareModule} from '../shared/share.module';
 import {WyUiModule} from '../wy-ui/wy-ui.module';
-import {SongSheetsModule} from './song-sheets/song-sheets.module';
+import {SheetModule} from './sheet/sheet.module';
+import {SongModule} from './song/song.module';
+import {SignerModule} from './signer/signer.module';
 
 
 @NgModule({
@@ -12,7 +14,9 @@ import {SongSheetsModule} from './song-sheets/song-sheets.module';
     ShareModule,
     WyUiModule,
     HomeModule,
-    SongSheetsModule
+    SheetModule,
+    SongModule,
+    SignerModule
   ],
 })
 export class PagesModule {

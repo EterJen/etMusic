@@ -44,7 +44,7 @@ export class WyLyric {
     this.lyric = null;
   }
 
-  parseLyric(lyric: Lyric): void {
+  parseLyric(lyric: Lyric | null): this {
     this.clear();
     this.lyric = lyric;
 
@@ -66,6 +66,7 @@ export class WyLyric {
       this.observerPlayingIndex();
       this.prepared = true;
     }
+    return this;
   }
 
   playAt(playingLine: PlayingLine): void {

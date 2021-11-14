@@ -21,7 +21,7 @@
               </h2>
               <nav>
                 <a *ngFor="let x of hotTags; index as idx"
-                   routerLink="/song-sheet"
+                   routerLink="/sheet/list"
                    [queryParams]="{cat: x.name}">{{x.name}}</a>
               </nav>
             </div>
@@ -45,7 +45,7 @@
         <div class="settled-singer">
           <div class="tit"><b>入住歌手</b></div>
           <div class="list">
-            <div *ngFor="let item of artists" class="card">
+            <div *ngFor="let item of artists" class="card" [routerLink]="['/','singer','detail',item.id]">
               <div class="pic">
                 <img [src]="item.picUrl" [alt]="item.name">
               </div>

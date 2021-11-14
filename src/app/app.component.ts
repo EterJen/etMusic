@@ -11,7 +11,7 @@ export class AppComponent {
   title = 'etMusic';
   menu = [
     {label: '发现', path: '/home'},
-    {label: '歌单', path: '/song-sheet'},
+    {label: '歌单', path: '/sheet/list'},
   ];
 
   constructor() {

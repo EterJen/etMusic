@@ -7,6 +7,8 @@ import {Observable} from 'rxjs';
 import SongDetail from '../../data-types/results/SongDetail';
 import {map} from 'rxjs/internal/operators';
 import Lyric from '../../data-types/entitys/Lyric';
+import SongsDetail from '../../data-types/results/SongsDetail';
+import {NzModalService} from 'ng-zorro-antd/modal';
 
 @Injectable({
   providedIn: ServiceModule
@@ -14,15 +16,32 @@ import Lyric from '../../data-types/entitys/Lyric';
 export class SongService {
 
   constructor(
+    private nzModalService: NzModalService,
     private http: HttpClient,
     @Inject(NeteaseCloudMusicApiPrefix) private neteaseCloudMusicApiPrefix: string
   ) {
   }
 
   /*
-   * 歌曲详情 by songIds
+   * 歌曲url by songIds
    * */
-  getSongDetail(songIds: string): Observable<Song[]> {
+  getSongsDetail(songIds: string): Observable<SongsDetail | null> {
+    const params = new HttpParams().set('ids', songIds);
+    return this.http.get<SongsDetail>(this.neteaseCloudMusicApiPrefix + '/song/detail', {params}).pipe(
+      map((res) => {
+        if (200 === res.code) {
+          return res;
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
+  /*
+   * 歌曲url by songIds
+   * */
+  getSongUrl(songIds: string): Observable<Song[]> {
     const params = new HttpParams().set('id', songIds);
     return this.http.get<SongDetail>(this.neteaseCloudMusicApiPrefix + '/song/url', {params}).pipe<Song[]>(
       map((res) => {
@@ -54,7 +73,7 @@ export class SongService {
   parsePlaylistTrick(playlistTracks: PlaylistTrack | PlaylistTrack[]): Observable<PlaylistTrack[]> {
     const parmasTracks = Array.isArray(playlistTracks) ? playlistTracks : [playlistTracks];
     const songIds = parmasTracks.map(x => x.id).join(',');
-    return this.getSongDetail(songIds).pipe(map(res => {
+    return this.getSongUrl(songIds).pipe(map(res => {
       return this.mapSongs2PlaylistTracks(parmasTracks, res);
     }));
 
@@ -64,10 +83,19 @@ export class SongService {
     const res: PlaylistTrack[] = [];
     for (const t of playlistTracks) {
       const find = songs.find(s => (s.id && (s.id === t.id)));
-      if (find && find.url) {
+      if (!t.song && find && find.url) {
         t.song = find;
-        res.push(t);
       }
+      if (!t.song?.url) {
+        if (playlistTracks.length === 1) {
+          this.nzModalService.confirm({
+            nzTitle: '<i>目标歌曲不存在</i>',
+            nzContent: '<b>Some descriptions</b>',
+            nzOnOk: () => console.log('OK')
+          });
+        }
+      }
+      res.push(t);
     }
     return res;
   }

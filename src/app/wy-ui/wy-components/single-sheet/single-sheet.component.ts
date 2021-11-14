@@ -1,7 +1,8 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SongSheet} from '../../../data-types/entitys/SongSheet';
-import {SongSheetService} from '../../../services/bz/songSheet.service';
 import {Playlist} from '../../../data-types/entitys/Playlist';
+import {EventUtils} from '../../../utils/EventUtils';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-single-sheet',
@@ -15,7 +16,9 @@ export class SingleSheetComponent implements OnInit {
   realSheet!: SongSheet | Playlist;
   @Output() playSheet = new EventEmitter<number>();
 
-  constructor() {
+  constructor(
+    private router: Router
+  ) {
   }
 
   get picUrl(): string | undefined {
@@ -35,7 +38,12 @@ export class SingleSheetComponent implements OnInit {
     }
   }
 
-  onPlaySheet(id: number): void {
+  onPlaySheet(id: number, $event: MouseEvent): void {
+    EventUtils.prohibitEventBubbling($event);
     this.playSheet.emit(id);
+  }
+
+  showSheet(): void {
+    this.router.navigate(['sheet', 'info', this.realSheet.id]);
   }
 }
