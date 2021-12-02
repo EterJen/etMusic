@@ -4,8 +4,8 @@ import {
   Component,
   ElementRef, EventEmitter, forwardRef,
   Inject,
-  Input, OnDestroy,
-  OnInit, Output,
+  Input, OnChanges, OnDestroy,
+  OnInit, Output, SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -25,8 +25,15 @@ import {EventUtils} from '../../utils/EventUtils';
   templateUrl: './wy-slider.component.html',
   styleUrls: ['./wy-slider.component.less'],
   /*
-  * ViewEncapsulation.Emulated 只在自己组件有效，不会被子组件（即使为None）同名样式覆盖也不会下沉子组件。 默认
-  * ViewEncapsulation.None 组件的样式会受外界影响，可以影响子组件；也可能被子组件同名样式覆盖掉(当子组件也为None)。
+  * ViewEncapsulation.Emulated 按一定规则得到新的定义样式 只在自己组件有效，不会被子组件（即使为None）同名样式覆盖也不会下沉子组件。 默认值
+  * wy-slider-handle.component.less 虽然没指定 但其中样式被替换为新的定义：
+  * .wy-slider-handle[_ngcontent-hmt-c103] {
+  * cursor: not-allowed;
+  * }
+  * 增加了_ngcontent-ykd-c103 同时_ngcontent-ykd-c103是.wy-slider-handle 所在div的一个属性 导致这一样式只对该目标div生效 不会覆盖 不会继承
+  *
+  * ViewEncapsulation.None  保留原样式定义 组件的样式会受外界影响，可以影响子组件；也可能被子组件同名样式覆盖掉(当子组件也为None)。
+  * wy-slider.component.less 中样式则没有改变(保持原样) 可以在 wy-slider-handle.component.less 中生效（被继承）  或被覆盖
   * */
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,7 +46,7 @@ import {EventUtils} from '../../utils/EventUtils';
     }
   ]
 })
-export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccessor {
+export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
   @Input() public sliderIsVertical = false;
   @Input() public dragAble = false;
   @Input() public minWidth = 0;
@@ -109,6 +116,15 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
   ngOnDestroy(): void {
     /*销毁取消订阅 释放资源*/
     this.unSubscribeDrag(['start', 'moving', 'end']);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    /*
+    * 渲染策略为：ChangeDetectionStrategy.OnPush
+    * 数据变化 并不会刷新dom
+    * 这里需要手动触发dom更新
+    * */
+    this.cdr.markForCheck();
   }
 
   private onSliderOffsetPositionChange(sliderOffset: number): void {
@@ -308,7 +324,6 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
     return limitNumberInRange(result, this.minWidth, this.maxWidth);
   }
 
-
   private setOffsetPosition(sliderOffsetPosition: sliderOffsetPositionType): void {
     if (this.sliderOffset !== sliderOffsetPosition) {
       this.sliderOffsetPosition = sliderOffsetPosition;
@@ -325,11 +340,6 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
   /*更新进度条滑块长度，触点位置*/
   private updateTrackAndHandles(): void {
     this.sliderOffset = this.calcOffset();
-    /*
-    * 渲染策略为：ChangeDetectionStrategy.OnPush
-    * 数据变化 并不会刷新dom
-    * 这里需要手动触发dom更新
-    * */
     this.cdr.markForCheck();
   }
 
