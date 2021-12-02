@@ -13,7 +13,7 @@ import {fromEvent, Observable, of, Subscription} from 'rxjs';
 import {distinctUntilChanged, filter, merge, pluck, takeUntil} from 'rxjs/operators';
 import {map, tap} from 'rxjs/internal/operators';
 import {DOCUMENT} from '@angular/common';
-import {getElementOffset,  sliderOffsetPositionType, WySliderDrag} from './wy-slider.helper';
+import {getElementOffset, sliderOffsetPositionType, WySliderDrag} from './wy-slider.helper';
 import {ArrayUtils} from '../../utils/ArrayUtils';
 import {calcPresent, limitNumberInRange} from '../../utils/number';
 import {wyySliderDragEvent} from '../../data-types/consts/wyy.consts';
@@ -87,7 +87,7 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
   * fn：父组件[(ngModel)]值改变的回调函数
   * 注册父组件传来的onChange事件,将匿名事件绑定到本组件
   * 当调用子组件目标绑定方法，将触发fn，并将入参作为value刷新父组件
-  * 相当于子传父的数据传递，只是不需要在父组件中重写更新value的接收代码（估计接口已帮忙实现），子组件只关发送，父组件自动刷新value
+  * 相当于子传父的数据传递，只是不需要在父组件中重写更新value的接收代码（估计接口已帮忙实现），子组件只管发送，父组件自动刷新value
   * */
   registerOnChange(fn: any): void {
     this.onSliderOffsetPositionChange = fn;
@@ -254,7 +254,9 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
     }
     this.sliderDragStart.emit(); // 告知父组件开始拖动
     this.toggleDragMoving(true);
+
     this.setOffsetPosition(offsetPosition);
+    this.onSliderOffsetPositionChange(this.sliderOffset);
   }
 
   /*切换滑动*/
@@ -281,12 +283,6 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
      * 此处需要及时返回百分比给父组件 一边拖动一边显示可至播放时间 提高用户使用体验
      * */
       this.onSliderOffsetPositionChange(this.sliderOffset);
-      /*
-      * 渲染策略为：ChangeDetectionStrategy.OnPush
-      * 数据变化 并不会刷新dom
-      * 这里需要手动触发dom更新
-      * */
-      this.cdr.markForCheck();
     }
   }
 
@@ -324,13 +320,16 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
   private onDragEnd(): void {
     this.sliderDragEnd.emit(this.sliderOffset); // 完成拖动 通知父组件
     this.toggleDragMoving(false);
-    this.cdr.markForCheck();
   }
 
   /*更新进度条滑块长度，触点位置*/
   private updateTrackAndHandles(): void {
     this.sliderOffset = this.calcOffset();
-
+    /*
+    * 渲染策略为：ChangeDetectionStrategy.OnPush
+    * 数据变化 并不会刷新dom
+    * 这里需要手动触发dom更新
+    * */
     this.cdr.markForCheck();
   }
 

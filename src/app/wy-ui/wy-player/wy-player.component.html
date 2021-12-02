@@ -15,7 +15,7 @@
         <i class="next" (click)="playNext(playingIndex + 1)"></i>
       </div>
       <div class="head" (click)="viewTargetTrack(playingSong?.id)">
-        <img  [src]="playingSongPicUrl">
+        <img [src]="playingSongPicUrl">
         <i class="mask"></i>
       </div>
       <div class="play">
@@ -23,7 +23,7 @@
           <p (click)="viewTargetTrack(playingSong?.id)" class="ellipsis margin-bottom-none">{{playingSong?.name}}</p>
           <ul class="songs clearfix  margin-bottom-none">
             <li *ngFor="let item of playingSong?.ar; last as isLast">
-              <a (click)="viewSinger(item.id)" >{{item.name}}</a>
+              <a (click)="viewSinger(item.id)">{{item.name}}</a>
               <span class="white-space-pre" [hidden]="isLast"> / </span>
             </li>
           </ul>
@@ -56,8 +56,11 @@
           <span></span>
         </p>
         <div class="control-vol" [hidden]="!showVolumePanel">
-          <app-wy-slider [(ngModel)]="volumePercent" (ngModelChange)="onVolumeChange($event)" [dragAble]="true"
-                         [sliderIsVertical]="true"></app-wy-slider>
+          <app-wy-slider
+            [(ngModel)]="volumePercent"
+            (ngModelChange)="onVolumeChange($event)"
+            [dragAble]="true"
+            [sliderIsVertical]="true"></app-wy-slider>
         </div>
       </div>
       <app-wy-play-list-panel
