@@ -4,21 +4,17 @@ import {FormsModule} from '@angular/forms';
 import {ZorroAntdModule} from './zorro-antd/zorro-antd.module';
 import {PipesModule} from './pipes/pipes.module';
 import {DirectivesModule} from './directives/directives.module';
+import {RouterModule} from '@angular/router';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ZorroAntdModule,
-    PipesModule,
-  ],
   exports: [
     CommonModule,
     FormsModule,
     ZorroAntdModule,
     PipesModule,
-    DirectivesModule
+    DirectivesModule,
+    RouterModule
   ]
 })
 /*

@@ -14,16 +14,16 @@
         <i class="toggle" [class.playing]="isPlaying" (click)="onPlayToggle()"></i>
         <i class="next" (click)="playNext(playingIndex + 1)"></i>
       </div>
-      <div class="head">
-        <img [src]="playingSongPicUrl">
+      <div class="head" (click)="viewTargetTrack(playingSong?.id)">
+        <img  [src]="playingSongPicUrl">
         <i class="mask"></i>
       </div>
       <div class="play">
         <div class="words clearfix">
-          <p class="ellipsis margin-bottom-none">{{playingSong?.name}}</p>
+          <p (click)="viewTargetTrack(playingSong?.id)" class="ellipsis margin-bottom-none">{{playingSong?.name}}</p>
           <ul class="songs clearfix  margin-bottom-none">
             <li *ngFor="let item of playingSong?.ar; last as isLast">
-              <a href="">{{item.name}}</a>
+              <a (click)="viewSinger(item.id)" >{{item.name}}</a>
               <span class="white-space-pre" [hidden]="isLast"> / </span>
             </li>
           </ul>
@@ -66,6 +66,8 @@
         [currentPlayingTime]="currentPlayingTime * 1000"
         (changeSong)="playByIndex($event)"
         (removeSong)="onRemoveSong($event)"
+        (viewSinger)="viewSinger($event)"
+        (viewSong)="viewTargetTrack($event)"
         (clearPlayList)="onClearPlayList()"
       >
 

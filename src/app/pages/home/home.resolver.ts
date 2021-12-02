@@ -48,11 +48,12 @@ export class HomeResolver implements Resolve<HomeResolverData> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<HomeResolverData> {
     const artistQuery = new ArtistQuery();
     artistQuery.limit = 9;
-    return forkJoin(
+    return forkJoin([
       this.bannerService.getBanners(),
       this.tagService.getHotTags(),
       this.songSheetService.getPersonalizedRecommends(),
       this.artistService.artistList(artistQuery)
+      ]
     ).pipe(first()).pipe(map(([banners, hotTags, personalizedRecommends, singers]) => {
       return new HomeResolverData(banners, hotTags, personalizedRecommends, singers);
     }));

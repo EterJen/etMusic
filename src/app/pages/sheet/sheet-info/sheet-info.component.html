@@ -106,7 +106,7 @@
           </td>
           <td>
             <ng-container *ngFor="let ar of item.ar; last as isLast">
-              <a>{{ar.name}}</a>
+              <a [routerLink]="['/','singer','detail',ar.id]">{{ar.name}}</a>
               <em [hidden]="isLast">/</em>
             </ng-container>
           </td>

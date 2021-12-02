@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {map, tap} from 'rxjs/internal/operators';
+import {SearchService} from './services/bz/search.service';
+import {SearchSuggestResult} from './data-types/results/SearchSuggest';
+import {CommonUtils} from './utils/CommonUtils';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +16,11 @@ export class AppComponent {
     {label: '发现', path: '/home'},
     {label: '歌单', path: '/sheet/list'},
   ];
+  searchSuggestResult!: SearchSuggestResult;
 
-  constructor() {
+  constructor(
+    private searchService: SearchService
+  ) {
     // this.f1();
     // this.f2();
     // this.f3();
@@ -141,6 +147,17 @@ export class AppComponent {
     };
 
     newObservable.subscribe(observer);
+  }
+
+
+  onSearch(keyword: string): void {
+    if (keyword) {
+      this.searchService.searchSuggest(keyword).subscribe((res) => {
+        this.searchSuggestResult = res;
+      });
+    } else {
+      this.searchSuggestResult = {};
+    }
   }
 
 

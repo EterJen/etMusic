@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { SheetRoutingModule } from './sheet-routing.module';
-import { SheetListComponent } from './sheet-list/sheet-list.component';
+import {SheetRoutingModule} from './sheet-routing.module';
+import {SheetListComponent} from './sheet-list/sheet-list.component';
 import {ShareModule} from '../../shared/share.module';
-import {WyComponentsModule} from '../../wy-ui/wy-components/wy-components.module';
-import { SheetInfoComponent } from './sheet-info/sheet-info.component';
+import {SheetInfoComponent} from './sheet-info/sheet-info.component';
+import {WyUiModule} from '../../wy-ui/wy-ui.module';
 
 
 @NgModule({
@@ -13,9 +13,10 @@ import { SheetInfoComponent } from './sheet-info/sheet-info.component';
     SheetInfoComponent,
   ],
   imports: [
+    WyUiModule,
     ShareModule,
-    WyComponentsModule,
     SheetRoutingModule
   ]
 })
-export class SheetModule { }
+export class SheetModule {
+}

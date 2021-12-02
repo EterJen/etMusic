@@ -18,7 +18,7 @@
               <span>歌手：</span>
               <ul>
                 <li class="clearfix" *ngFor="let item of song?.ar; last as isLast">
-                  <a [href]="'//music.163.com/artist?id=' + item?.id">{{item.name}}</a>
+                  <a [routerLink]="['/','singer','detail',item.id]">{{item.name}}</a>
                   <i [hidden]="isLast">/</i>
                 </li>
               </ul>

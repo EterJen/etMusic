@@ -1,0 +1,42 @@
+<div class="search-panel">
+  <div class="list-wrap">
+    <div class="list-item clearfix" [hidden]="!searchSuggestResult.songs?.length">
+      <div class="hd">
+        <i class="ico ico-song"></i>
+        <span>单曲</span>
+      </div>
+      <ul>
+        <li class="ellipsis" (click)="viewTargetTrack(item.id)"
+            *ngFor="let item of searchSuggestResult.songs; last as isLast"
+            [innerHTML]="item.name | highlightByReg: keywordsReg">
+        >
+        </li>
+      </ul>
+    </div>
+    <div class="list-item clearfix" [hidden]="!searchSuggestResult.artists?.length">
+      <div class="hd">
+        <i class="ico ico-singer"></i>
+        <span>歌手</span>
+      </div>
+      <ul>
+        <li class="ellipsis" (click)="viewSinger(item.id)"
+            *ngFor="let item of searchSuggestResult.artists; last as isLast"
+            [innerHTML]="item.name | highlightByReg: keywordsReg">
+        </li>
+      </ul>
+    </div>
+    <div class="list-item clearfix" [hidden]="!searchSuggestResult.playlists?.length">
+      <div class="hd">
+        <i class="ico ico-sheet"></i>
+        <span>歌单</span>
+      </div>
+      <ul>
+        <li class="ellipsis" (click)="viewSheet(item.id)"
+            *ngFor="let item of searchSuggestResult.playlists; last as isLast"
+            [innerHTML]="item.name | highlightByReg: keywordsReg"
+        >
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

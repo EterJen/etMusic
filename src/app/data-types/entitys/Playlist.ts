@@ -44,6 +44,8 @@ export class Playlist {
   public remixVideo?: any;
   public sharedUsers?: any;
   public historySharedUsers?: any;
+  public bookCount?: number;
+  public officialTags?: any;
 }
 
 export class PlaylistTrackId {

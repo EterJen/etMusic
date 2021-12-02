@@ -5,6 +5,7 @@ import {fromEvent, Subscription} from 'rxjs';
 import {DOCUMENT} from '@angular/common';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {PlayerStoreService} from '../../app-store/player-store/player-store.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-wy-player',
@@ -14,7 +15,7 @@ import {PlayerStoreService} from '../../app-store/player-store/player-store.serv
 export class WyPlayerComponent implements OnInit {
 
   public playPercent = 0;
-  public volumePercent = 3;
+  public volumePercent = 0;
   public playBufferPercent = 0;
   public songList: PlaylistTrack[] = [];
   public playList: PlaylistTrack[] = [];
@@ -48,6 +49,7 @@ export class WyPlayerComponent implements OnInit {
   constructor(
     private playerStoreService: PlayerStoreService,
     private nzModalService: NzModalService,
+    private router: Router,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.playerStoreService.watchPlayMode().subscribe((playMode: PlayMode) => {
@@ -280,6 +282,23 @@ export class WyPlayerComponent implements OnInit {
     this.showVolumePanel = false;
     this.showPlaylistPanel = false;
   }
+
+  viewTargetTrack(id: number | undefined): void {
+    if (id === undefined) {
+      return;
+    }
+    this.showPlaylistPanel = false;
+    this.showVolumePanel = false;
+    this.router.navigate(['/', 'song', 'info', id]);
+  }
+
+  viewSinger(id: number): void {
+    this.showPlaylistPanel = false;
+    this.showVolumePanel = false;
+    this.router.navigate(['/', 'singer', 'detail', id]);
+  }
+
+
 
   private stopPlay(): void {
     this.audioEl?.pause();

@@ -15,6 +15,7 @@ import {SongService} from '../../../services/bz/song.service';
 import {PlayingLine, WyLyric} from './wy-lyric';
 import {Subscription, timer} from 'rxjs';
 import {PlayerStoreService} from '../../../app-store/player-store/player-store.service';
+import {EventUtils} from '../../../utils/EventUtils';
 
 @Component({
   selector: 'app-wy-play-list-panel',
@@ -27,6 +28,9 @@ export class WyPlayListPanelComponent implements OnInit, OnChanges, AfterViewIni
   @Input() show = false;
   @Input() currentPlayingTime = 0;
   @Output() panelClose = new EventEmitter();
+  @Output() viewSong = new EventEmitter<number>();
+  @Output() viewSheet = new EventEmitter<number>();
+  @Output() viewSinger = new EventEmitter<number>();
   @Output() changeSong = new EventEmitter<number>();
   @Output() clearPlayList = new EventEmitter<void>();
   @Output() removeSong = new EventEmitter<PlaylistTrack>();
@@ -100,6 +104,17 @@ export class WyPlayListPanelComponent implements OnInit, OnChanges, AfterViewIni
     this.changeSong.emit(newPlayingIndex);
   }
 
+  onViewSinger($event: MouseEvent, id: number): void {
+    EventUtils.prohibitEventBubbling($event);
+    this.viewSinger.emit(id);
+  }
+
+  onViewSong($event: MouseEvent, id: number): void {
+    EventUtils.prohibitEventBubbling($event);
+    this.viewSong.emit(id);
+  }
+
+
 
   private watchPlayMode(playMode: PlayMode): void {
     this.playMode = playMode;
@@ -135,6 +150,4 @@ export class WyPlayListPanelComponent implements OnInit, OnChanges, AfterViewIni
       }
     });
   }
-
-
 }

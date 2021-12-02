@@ -11,7 +11,7 @@ export class Artist {
   public trans?: string;
   public briefDesc?: string;
   public name?: string;
-  public id?: number;
+  public id!: number;
   public publishTime?: number;
   public picId_str?: string;
   public img1v1Id_str?: string;

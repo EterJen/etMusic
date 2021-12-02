@@ -1,4 +1,6 @@
 import {Song} from './Song';
+import {Artist} from './Artist';
+import {Album} from '../results/SearchSuggest';
 
 export class PlaylistTrack {
   public name?: string;
@@ -38,6 +40,13 @@ export class PlaylistTrack {
   public cp?: number;
   public mv?: number;
   public publishTime?: number;
+  public artists?: Artist[];
+  public album?: Album;
+  public duration?: number;
+  public copyrightId?: number;
+  public status?: number;
+  public mvid?: number;
+  public rUrl?: any;
 }
 
 
@@ -67,7 +76,7 @@ export class SongL {
   public vd?: number;
 }
 export class SongAr {
-  public id?: number;
+  public id!: number;
   public name?: string;
 }
 

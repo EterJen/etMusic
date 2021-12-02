@@ -9,14 +9,14 @@
           </ul>
         </div>
         <div class="right">
-          <div class="search">
-            <nz-input-group [nzSuffix]="suffixIconSearch">
-              <input type="text" nz-input placeholder="歌手/歌曲/歌单"/>
-            </nz-input-group>
-            <ng-template #suffixIconSearch>
-              <i nz-icon nzType="search"></i>
-            </ng-template>
-          </div>
+          <ng-template #diyWySearchView let-searchTip="defaultSearchTip">
+              <input type="text" #searchInput nz-input [placeholder]="searchTip"/>
+          </ng-template>
+          <app-wy-search
+            [customView]="diyWySearchView"
+            (keywordsChange)="onSearch($event)"
+            [searchSuggestResult]="searchSuggestResult"
+          ></app-wy-search>
           <div class="menber">
             <div class="no-login">
               <ul nz-menu nzTheme="dark" nzMode="horizontal">
