@@ -1,18 +1,29 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {PlayMode} from '../../app-store/player-store/reducer';
+import {CurrentAction, CurrentActionTipTitle, PlayMode} from '../../app-store/player-store/reducer';
 import {PlaylistTrack} from '../../data-types/entitys/PlaylistTrack';
-import {fromEvent, Subscription} from 'rxjs';
+import {fromEvent, Subscription, timer} from 'rxjs';
 import {DOCUMENT} from '@angular/common';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {PlayerStoreService} from '../../app-store/player-store/player-store.service';
 import {Router} from '@angular/router';
+import {animate, AnimationEvent, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-wy-player',
   templateUrl: './wy-player.component.html',
-  styleUrls: ['./wy-player.component.less']
+  styleUrls: ['./wy-player.component.less'],
+  animations: [trigger('playerVisual', [
+    state('show', style({bottom: '0px'})),
+    state('hide', style({bottom: '-71px'})),
+    transition('show=>hide', [animate('0.3s')]),
+    transition('hide=>show', [animate('0.3s')]),
+  ])]
 })
 export class WyPlayerComponent implements OnInit {
+  showPlayer = 'hide';
+  isLock = false;
+  // 是否正在动画
+  animating = false;
 
   public playPercent = 0;
   public volumePercent = 0;
@@ -29,6 +40,10 @@ export class WyPlayerComponent implements OnInit {
   public showVolumePanel = false;
   public playPrepared = false;
   public showPlaylistPanel = false;
+  controllToolTip = {
+    title: '',
+    show: false
+  };
   /*
   * 订阅页面点击事件
   * 不是播放器点击则隐藏音量面板
@@ -45,6 +60,8 @@ export class WyPlayerComponent implements OnInit {
   ];
   private playModeIndex = 0;
   public playMode: PlayMode = this.playModes[this.playModeIndex];
+  private mouseFocus = false;
+  private hideActionTipTimer?: Subscription;
 
   constructor(
     private playerStoreService: PlayerStoreService,
@@ -57,6 +74,28 @@ export class WyPlayerComponent implements OnInit {
     });
     this.playerStoreService.watchSongList().subscribe((songList: PlaylistTrack[]) => {
       this.songList = songList;
+    });
+    this.playerStoreService.watchCurrentAction().subscribe((res) => {
+      if (res !== CurrentAction.Other) {
+        if (this.hideActionTipTimer) {
+          this.hideActionTipTimer.unsubscribe();
+        }
+        type CurrentActionTipTitleKey = keyof typeof CurrentActionTipTitle;
+        this.controllToolTip.title = CurrentActionTipTitle[CurrentAction[res] as CurrentActionTipTitleKey];
+        if (this.showPlayer === 'show') {
+          this.showActionTip();
+        } else {
+          this.showPlayer = 'show';
+        }
+      } else {
+        this.controllToolTip.title = '';
+        this.controllToolTip.show = false;
+        timer(200).subscribe(() => {
+          if (!this.mouseFocus && !this.isLock) {
+            this.showPlayer = 'hide';
+          }
+        });
+      }
     });
     this.playerStoreService.watchPlayList().subscribe((playList: PlaylistTrack[]) => {
       this.playList = playList;
@@ -298,7 +337,19 @@ export class WyPlayerComponent implements OnInit {
     this.router.navigate(['/', 'singer', 'detail', id]);
   }
 
+  togglePlayer(type: string, mouseFocus: boolean): void {
+    this.mouseFocus = mouseFocus;
+    if (!this.isLock && !this.animating) {
+      this.showPlayer = type;
+    }
+  }
 
+  playerVisualAnimatingDone(event: AnimationEvent): void {
+    this.animating = false;
+    if (event.toState === 'show' && this.controllToolTip.title) {
+      this.showActionTip();
+    }
+  }
 
   private stopPlay(): void {
     this.audioEl?.pause();
@@ -329,5 +380,13 @@ export class WyPlayerComponent implements OnInit {
 
   private rePlayCurrentSong(): void {
     this.audioEl.currentTime = 0;
+  }
+
+  private showActionTip(): void {
+
+    this.controllToolTip.show = true;
+    this.hideActionTipTimer = timer(800).subscribe(() => {
+      this.playerStoreService.reSetCurrentAction();
+    });
   }
 }

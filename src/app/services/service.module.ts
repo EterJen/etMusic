@@ -3,7 +3,7 @@ import {isPlatformBrowser} from '@angular/common';
 import {environment} from '../../environments/environment';
 
 export const WINDOW = new InjectionToken('WINDOW_TOKEN');
-export const NeteaseCloudMusicApiPrefix = new InjectionToken('NeteaseCloudMusicApiPrefix');
+export const NetEaseCloudMusicApiPrefix = new InjectionToken('NetEaseCloudMusicApiPrefix');
 
 
 @NgModule({
@@ -11,12 +11,12 @@ export const NeteaseCloudMusicApiPrefix = new InjectionToken('NeteaseCloudMusicA
   imports: [],
   providers: [
     {
-      provide: NeteaseCloudMusicApiPrefix,
+      provide: NetEaseCloudMusicApiPrefix,
       useValue: environment.baseUri
     },
     {
       /*
-      * 注入window对象 跨平台支持
+      * 注入window对象 跨平台支持?
       * */
       provide: WINDOW,
       useFactory(platformId: object): Window | {} {

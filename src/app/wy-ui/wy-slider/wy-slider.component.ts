@@ -15,10 +15,10 @@ import {map, tap} from 'rxjs/internal/operators';
 import {DOCUMENT} from '@angular/common';
 import {getElementOffset, sliderOffsetPositionType, WySliderDrag} from './wy-slider.helper';
 import {ArrayUtils} from '../../utils/ArrayUtils';
-import {calcPresent, limitNumberInRange} from '../../utils/number';
 import {wyySliderDragEvent} from '../../data-types/consts/wyy.consts';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {EventUtils} from '../../utils/EventUtils';
+import {NumberUtils} from '../../utils/NumberUtils';
 
 @Component({
   selector: 'app-wy-slider',
@@ -213,7 +213,7 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
 
     /*滑块相对页面偏移量*/
     const sliderStart = this.getSliderStart();
-    const ratio = limitNumberInRange((rawPosition - sliderStart) / sliderLength, 0, 1);
+    const ratio = NumberUtils.limitNumberInRange((rawPosition - sliderStart) / sliderLength, 0, 1);
     const realRatio = this.sliderIsVertical ? 1 - ratio : ratio;
     return realRatio * (this.maxWidth - this.minWidth) + this.minWidth;
   }
@@ -321,7 +321,7 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
     if (isNaN(result)) {
       result = this.minWidth;
     }
-    return limitNumberInRange(result, this.minWidth, this.maxWidth);
+    return NumberUtils.limitNumberInRange(result, this.minWidth, this.maxWidth);
   }
 
   private setOffsetPosition(sliderOffsetPosition: sliderOffsetPositionType): void {
@@ -344,6 +344,6 @@ export class WySliderComponent implements OnInit, OnDestroy, ControlValueAccesso
   }
 
   private calcOffset(): number {
-    return calcPresent(this.sliderOffsetPosition, this.minWidth, this.maxWidth);
+    return NumberUtils.calcPresent(this.sliderOffsetPosition, this.minWidth, this.maxWidth);
   }
 }

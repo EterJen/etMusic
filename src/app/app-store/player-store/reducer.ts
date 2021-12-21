@@ -1,23 +1,38 @@
 import {Action,  createReducer, on} from '@ngrx/store';
-import {setPlaying, setPlayList, setPlayingIndex, setPlayMode, setSongList, setFlexiblePlayerState} from './action';
+import {setPlaying, setPlayList, setPlayingIndex, setPlayMode, setSongList, flexSetPlayerState,  setCurrentAction} from './action';
 import {PlaylistTrack} from '../../data-types/entitys/PlaylistTrack';
 
 export type PlayMode = {
   type: 'loop' | 'random' | 'singleLoop',
   label: '循环' | '随机' | '单曲循环',
 };
-export type FlexiblePlayerState = {
+export type FlexPlayerState = {
   playMode?: PlayMode; // 播放模式
   songList?: PlaylistTrack[]; // 歌单
   playList?: PlaylistTrack[]; // 播放别表
   playingIndex?: number; // 播放索引
+  currentAction?: CurrentAction
 };
+
+export enum CurrentAction {
+  Add,
+  Play,
+  Delete,
+  Clear,
+  Other
+}
+export enum CurrentActionTipTitle{
+  Add = '已添加到播放列表',
+  Play = '已开始播放'
+}
+
 
 export type PlayerState = {
   playMode: PlayMode; // 播放模式
   songList: PlaylistTrack[]; // 歌单
   playList: PlaylistTrack[]; // 播放别表
   playingIndex: number; // 播放索引
+  currentAction: CurrentAction
 };
 
 /*
@@ -29,6 +44,7 @@ export const initialPlayerState: PlayerState = {
   songList: [],
   playList: [],
   playingIndex: -1,
+  currentAction: CurrentAction.Other
 };
 
 
@@ -40,7 +56,8 @@ const reducer = createReducer(
   on(setSongList, (state, {songList}) => ({...state, songList})),
   on(setPlayList, (state, {playList}) => ({...state, playList})),
   on(setPlayingIndex, (state, {playingIndex}) => ({...state, playingIndex})),
-  on(setFlexiblePlayerState, (state, {...args}) => ({...state, ...args})),
+  on(setCurrentAction, (state, {currentAction}) => ({...state, currentAction})),
+  on(flexSetPlayerState, (state, {...args}) => ({...state, ...args})),
 );
 
 

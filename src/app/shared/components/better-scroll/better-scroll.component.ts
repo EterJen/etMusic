@@ -11,7 +11,6 @@ import {
 import BScroll, {MouseWheel, ScrollBar} from 'better-scroll';
 import {WINDOW} from '../../../services/service.module';
 import {timer} from 'rxjs';
-import {limitNumberInRange} from '../../../utils/number';
 
 BScroll.use(ScrollBar);
 BScroll.use(MouseWheel);

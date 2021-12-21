@@ -9,7 +9,7 @@ import {Tag} from '../../data-types/entitys/Tag';
 import HotPlaylist from '../../data-types/results/HotPlaylist';
 import {SongSheet} from '../../data-types/entitys/SongSheet';
 import Personalized from '../../data-types/results/Personalized';
-import {NeteaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
+import {NetEaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
 
 @Injectable({
   providedIn: ServiceModule
@@ -18,7 +18,7 @@ export class TagService {
 
   constructor(
     private http: HttpClient,
-    @Inject(NeteaseCloudMusicApiPrefix) private neteaseCloudMusicApiPrefix: string
+    @Inject(NetEaseCloudMusicApiPrefix) private netEaseCloudMusicApiPrefix: string
   ) {
   }
 
@@ -26,7 +26,7 @@ export class TagService {
   * 热门歌单分类
   * */
   getHotTags(): Observable<Tag[]> {
-    return this.http.get<HotPlaylist>(this.neteaseCloudMusicApiPrefix + '/playlist/hot').pipe<Tag[]>(
+    return this.http.get<HotPlaylist>(this.netEaseCloudMusicApiPrefix + '/playlist/hot').pipe<Tag[]>(
       map((res) => {
         if (200 === res.code && res.tags) {
           return res.tags.sort((a, b) => {

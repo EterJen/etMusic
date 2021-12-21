@@ -2,9 +2,14 @@
   appClickOutSide
   [clickOutSideListenAble]="showVolumePanel || showPlaylistPanel"
   (clickOutSide)="onElementClickOutSide()"
+  (mouseenter)="togglePlayer('show',true)"
+  (mouseleave)="togglePlayer('hide', false)"
+  [@playerVisual]="showPlayer"
+  (@playerVisual.start)="animating = true"
+  (@playerVisual.done)="playerVisualAnimatingDone($event)"
   class="m-player">
-  <div class="lock">
-    <div class="left"></div>
+  <div class="lock" (click)="isLock = !isLock">
+    <div class="left"><i [class.locked]="isLock"></i></div>
   </div>
   <div class="hand"></div>
   <div class="container">
@@ -52,7 +57,11 @@
       <div class="ctrl">
         <i class="volume" (click)="toggleVolumePanel()" title="音量"></i>
         <i [ngClass]="playMode.type" [title]="playMode.label" (click)="changePlayMode()"></i>
-        <p class="open" (click)="togglePlaylistPanel()">
+        <p class="open"
+           [nz-tooltip]="controllToolTip.title"
+           [nzTooltipVisible]="controllToolTip.show"
+           nzTooltipOverlayClassName="tip-bg"
+           (click)="togglePlaylistPanel()">
           <span></span>
         </p>
         <div class="control-vol" [hidden]="!showVolumePanel">

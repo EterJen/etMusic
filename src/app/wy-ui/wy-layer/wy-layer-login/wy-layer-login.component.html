@@ -1,0 +1,36 @@
+<div class="login-phone modal-content">
+  <div class="modal-wrap">
+    <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="loginFormSubmit()">
+      <nz-form-item>
+        <nz-form-control nzHasFeedback nzErrorTip="请输入正确手机号" >
+          <nz-input-group nzPrefixIcon="mobile">
+            <input type="tel" nz-input placeholder="请输入手机号" [formControlName]="df.phone">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzHasFeedback nzErrorTip="请输入正确密码" >
+          <nz-input-group nzPrefixIcon="lock" >
+            <input type="password" nz-input placeholder="请输入密码" formControlName="password">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item formGroupName="setting">
+        <nz-form-control   >
+          <div class="tools">
+            <label nz-checkbox class="remember" formControlName="remember">
+              <span>记住密码</span>
+            </label>
+          </div>
+          <!--默认是button submit-->
+          <button type="submit" nz-button class="login-form-button" [disabled]="loginForm.invalid" nzType="primary" nzBlock>登陆</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+</div>
+
+<div class="m-footer clearfix">
+  <a (click)="openLayerModal(ModalType.Default)">其他登陆方式</a>
+  <a (click)="openLayerModal(ModalType.Register)">没有帐号？免费注册</a>
+</div>

@@ -3,7 +3,13 @@ import {Observable, of} from 'rxjs';
 import {map, tap} from 'rxjs/internal/operators';
 import {SearchService} from './services/bz/search.service';
 import {SearchSuggestResult} from './data-types/results/SearchSuggest';
-import {CommonUtils} from './utils/CommonUtils';
+import {ObjUtils} from './utils/ObjUtils';
+import {ModalType} from './app-store/wy-layer-store/reducer';
+import {WyLayerStoreService} from './app-store/wy-layer-store/wy-Layer-store.service';
+import LoginInfo from './data-types/results/LoginInfo';
+import {LocalStorageService} from './services/common/local-storage.service';
+import {MemberService} from './services/bz/member.service';
+import {WyUserStoreService} from './app-store/wy-user-store/wy-user-store.service';
 
 @Component({
   selector: 'app-root',
@@ -11,16 +17,26 @@ import {CommonUtils} from './utils/CommonUtils';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
+  ModalType = ModalType;
   title = 'etMusic';
   menu = [
     {label: '发现', path: '/home'},
     {label: '歌单', path: '/sheet/list'},
   ];
   searchSuggestResult!: SearchSuggestResult;
+  user!: LoginInfo | null;
 
   constructor(
-    private searchService: SearchService
+    private searchService: SearchService,
+    private wyLayerStoreService: WyLayerStoreService,
+    private wyUserStoreService: WyUserStoreService,
+    private memberService: MemberService
   ) {
+    this.memberService.initUserInfo();
+    this.wyUserStoreService.watchWyUserLoginInfo().subscribe((res) => {
+      this.user = res;
+    });
+
     // this.f1();
     // this.f2();
     // this.f3();
@@ -161,4 +177,12 @@ export class AppComponent {
   }
 
 
+  openLayerModal(modalType: ModalType): void {
+    this.wyLayerStoreService.wyLayerModalDispatch(true, modalType);
+  }
+
+
+  logOut(): void {
+    this.memberService.logOut();
+  }
 }

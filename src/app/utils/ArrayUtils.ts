@@ -1,4 +1,4 @@
-import {getRandomInt} from './number';
+import {NumberUtils} from './NumberUtils';
 
 export class ArrayUtils {
   public static simpleFindIndex(arr: any[], target: any, byFiled?: string): number {
@@ -18,7 +18,7 @@ export class ArrayUtils {
   public static shuffle<T>(src: T[]): T[] {
     const result = src.slice();
     for (let i = 0; i < result.length; i++) {
-      const j = getRandomInt([0, i]);
+      const j = NumberUtils.getRandomInt([0, i]);
       [result[i], result[j]] = [result[j], result[i]]; // 排序的本质就是交换位置 随机排序就是随机交换
     }
     return result;

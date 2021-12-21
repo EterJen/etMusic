@@ -1,7 +1,13 @@
 import Lyric from '../../../data-types/entitys/Lyric';
-import {lyricTimeExp} from '../../../utils/exp';
 import {PartialObserver, Subject, Subscription} from 'rxjs';
 import {distinctUntilChanged} from 'rxjs/operators';
+
+/*
+* [02:11.49]
+* */
+// export const lyricTimeExp = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/g;
+// export const lyricTimeExp = /\[(\d{2}):(\d{2})(\.\d{2,3})?\]/g;
+export const lyricTimeExp = /\[(\d{2}):(\d{2})(?:\.(\d{2,3}))?\]/g;
 
 export interface BaseLyricLine {
   txt: string;
@@ -79,6 +85,7 @@ export class WyLyric {
     * 意味着需要等待一段时间后才是真的开始播放目标歌词
     * */
     const prePlayLyricIndex = this.lyricLines.findIndex(item => {
+      // 歌词列表time 逐渐增大 找到的第一个比当前播放时间大或等于的作为即将展示的歌词
       return playingLine.currentPlayingTime <= item.time;
     });
     if (prePlayLyricIndex !== -1) {
@@ -86,6 +93,9 @@ export class WyLyric {
     }
   }
 
+  /*
+  * 打开订阅
+  * */
   observerPlayingIndex(): void {
     /*
     * distinctUntilChanged 默认使用 === 做比较两个连续值 重复则不会触发订阅

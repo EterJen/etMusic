@@ -114,7 +114,10 @@ export class WyPlayListPanelComponent implements OnInit, OnChanges, AfterViewIni
     this.viewSong.emit(id);
   }
 
-
+  onRemoveSong(event: MouseEvent, item: PlaylistTrack): void {
+    EventUtils.prohibitEventBubbling(event);
+    this.removeSong.emit(item);
+  }
 
   private watchPlayMode(playMode: PlayMode): void {
     this.playMode = playMode;

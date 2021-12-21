@@ -4,7 +4,7 @@ import {map, switchMap} from 'rxjs/internal/operators';
 import {Observable, of} from 'rxjs';
 import {SongSheet} from '../../data-types/entitys/SongSheet';
 import Personalized from '../../data-types/results/Personalized';
-import {NeteaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
+import {NetEaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
 import {SongService} from './song.service';
 import SongSheetDetail from '../../data-types/results/SongSheetDetail';
 import {PlaylistTrack} from '../../data-types/entitys/PlaylistTrack';
@@ -18,7 +18,7 @@ export class SongSheetService {
 
   constructor(
     private http: HttpClient,
-    @Inject(NeteaseCloudMusicApiPrefix) private neteaseCloudMusicApiPrefix: string,
+    @Inject(NetEaseCloudMusicApiPrefix) private netEaseCloudMusicApiPrefix: string,
     private playerStoreService: PlayerStoreService,
     private songService: SongService
   ) {
@@ -28,7 +28,7 @@ export class SongSheetService {
    * 个性推荐歌单
    * */
   getPersonalizedRecommends(): Observable<SongSheet[]> {
-    return this.http.get<Personalized>(this.neteaseCloudMusicApiPrefix + '/personalized?limit=20').pipe<SongSheet[]>(
+    return this.http.get<Personalized>(this.netEaseCloudMusicApiPrefix + '/personalized?limit=20').pipe<SongSheet[]>(
       map((res) => {
         if (200 === res.code && res.result) {
           return res.result.slice(0, 16);
@@ -43,7 +43,7 @@ export class SongSheetService {
    * */
   getSongSheetDetail(sheetId: number): Observable<SongSheetDetail> {
     const params = new HttpParams().set('id', sheetId.toString());
-    return this.http.get<SongSheetDetail>(this.neteaseCloudMusicApiPrefix + '/playlist/detail', {params});
+    return this.http.get<SongSheetDetail>(this.netEaseCloudMusicApiPrefix + '/playlist/detail', {params});
   }
 
   /*

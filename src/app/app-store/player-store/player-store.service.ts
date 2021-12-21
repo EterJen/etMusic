@@ -2,9 +2,18 @@ import {Injectable} from '@angular/core';
 import {AppStoreModule} from '../app-store.module';
 import {select, Store} from '@ngrx/store';
 import {AppStore} from '../states-config';
-import {getPlayerState, getPlayingIndex, getPlayingSong, getPlayList, getPlayMode, getSongList, getSongListIndex} from './selector';
-import {PlayerState, PlayMode} from './reducer';
-import {setFlexiblePlayerState, setPlayingIndex} from './action';
+import {
+  getCurrentAction,
+  getPlayerState,
+  getPlayingIndex,
+  getPlayingSong,
+  getPlayList,
+  getPlayMode,
+  getSongList,
+  getSongListIndex
+} from './selector';
+import {CurrentAction, PlayerState, PlayMode} from './reducer';
+import {flexSetPlayerState} from './action';
 import {PlaylistTrack} from '../../data-types/entitys/PlaylistTrack';
 import {ArrayUtils} from '../../utils/ArrayUtils';
 import {Observable} from 'rxjs';
@@ -41,6 +50,10 @@ export class PlayerStoreService {
     return this.playerStore.pipe(select(getSongList));
   }
 
+  watchCurrentAction(): Observable<CurrentAction> {
+    return this.playerStore.pipe(select(getCurrentAction));
+  }
+
   watchPlayList(): Observable<PlaylistTrack[]> {
     return this.playerStore.pipe(select(getPlayList));
   }
@@ -65,7 +78,7 @@ export class PlayerStoreService {
       // 新数组 浅拷贝 需要保证后面业务逻辑只存在只读操作 若涉及修改数组项使用深拷贝 _.cloneDeep(list)
       newPlayList = songList.slice();
     }
-    this.appStore.dispatch(setFlexiblePlayerState({songList, playList: newPlayList, playingIndex}));
+    this.appStore.dispatch(flexSetPlayerState({songList, playList: newPlayList, playingIndex, currentAction: CurrentAction.Play}));
   }
 
   changePlayMode(playMode: PlayMode): void {
@@ -81,13 +94,17 @@ export class PlayerStoreService {
       * 改变播放模式不应该导致当前歌曲被切换 故需要同时改变playMode playList playingIndex
       * */
       const newIndex = ArrayUtils.simpleFindIndex(newPlayList, this.playerState.playList[this.playerState.playingIndex]);
-      this.appStore.dispatch(setFlexiblePlayerState({playList: newPlayList, playMode, playingIndex: newIndex}));
+      this.appStore.dispatch(flexSetPlayerState({playList: newPlayList, playMode, playingIndex: newIndex}));
     }
   }
 
 
   playByIndex(newIndex: number): void {
-    this.appStore.dispatch(setPlayingIndex({playingIndex: newIndex}));
+    if (newIndex !== -1) {
+      this.appStore.dispatch(flexSetPlayerState({playingIndex: newIndex, currentAction: CurrentAction.Play}));
+    } else {
+      this.appStore.dispatch(flexSetPlayerState({playingIndex: newIndex}));
+    }
   }
 
   remove(target: PlaylistTrack): void {
@@ -103,11 +120,11 @@ export class PlayerStoreService {
     } else if (this.playerState.playingIndex === playList.length) { // 删除最后正在播放的歌曲 跳转到第一首
       newPlayIndex = 0;
     }
-    this.appStore.dispatch(setFlexiblePlayerState({playingIndex: newPlayIndex, playList, songList}));
+    this.appStore.dispatch(flexSetPlayerState({playingIndex: newPlayIndex, playList, songList, currentAction: CurrentAction.Delete}));
   }
 
   clear(): void {
-    this.appStore.dispatch(setFlexiblePlayerState({playingIndex: -1, playList: [], songList: []}));
+    this.appStore.dispatch(flexSetPlayerState({playingIndex: -1, playList: [], songList: [], currentAction: CurrentAction.Clear}));
   }
 
   addSong(item: PlaylistTrack | PlaylistTrack[] | null, withPlay = false): void {
@@ -119,6 +136,7 @@ export class PlayerStoreService {
     }
     this.addSongDetail(item, withPlay);
   }
+
   /*
   * 添加歌曲 列表 播放
   * */
@@ -127,22 +145,29 @@ export class PlayerStoreService {
       const songList = this.playerState.songList.slice();
       const playList = this.playerState.playList.slice();
       let playingIndex = this.playerState.playingIndex;
+      let currentAction = CurrentAction.Add;
       for (let i = 0; i < songs.length; i++) {
         const song = songs[i];
         const pIndex = ArrayUtils.simpleFindIndex(songList, song);
         if (pIndex > -1) {
           if (withPlay && i === 0) {
             playingIndex = pIndex;
+            currentAction = CurrentAction.Play;
           }
         } else {
           songList.push(song);
           playList.push(song);
           if (withPlay && i === 0) {
             playingIndex = playList.length - 1;
+            currentAction = CurrentAction.Play;
           }
         }
       }
-      this.appStore.dispatch(setFlexiblePlayerState({songList, playList, playingIndex}));
+      this.appStore.dispatch(flexSetPlayerState({songList, playList, playingIndex, currentAction}));
     });
+  }
+
+  reSetCurrentAction(): void {
+    this.appStore.dispatch(flexSetPlayerState({currentAction: CurrentAction.Other}));
   }
 }

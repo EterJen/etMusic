@@ -1,4 +1,4 @@
-import { PlayerState, PlayMode} from './reducer';
+import {CurrentAction, PlayerState, PlayMode} from './reducer';
 import {createSelector, props} from '@ngrx/store';
 import {PlaylistTrack} from '../../data-types/entitys/PlaylistTrack';
 import {ArrayUtils} from '../../utils/ArrayUtils';
@@ -18,6 +18,7 @@ export const getSongList = createSelector<PlayerState, PlayerState, PlaylistTrac
 export const getPlayList = createSelector<PlayerState, PlayerState, PlaylistTrack[]>(selectPlayerState, (playerState: PlayerState) => playerState.playList);
 export const getPlayingIndex = createSelector<PlayerState, PlayerState, number>(selectPlayerState, (playerState: PlayerState) => playerState.playingIndex);
 export const getPlayingSong = createSelector<PlayerState, PlayerState, PlaylistTrack>(selectPlayerState, (playerState: PlayerState) => playerState.playList[playerState.playingIndex]);
+export const getCurrentAction = createSelector<PlayerState, PlayerState, CurrentAction>(selectPlayerState, (playerState: PlayerState) => playerState.currentAction);
 export const getSongListIndex = createSelector<PlayerState, PlayerState, number>(selectPlayerState, (playerState: PlayerState) => {
   if (playerState.playMode.type === 'random') {
     return ArrayUtils.simpleFindIndex(playerState.songList, playerState.playList[playerState.playingIndex]);

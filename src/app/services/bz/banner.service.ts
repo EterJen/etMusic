@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/internal/operators';
 import {Observable} from 'rxjs';
-import {NeteaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
+import {NetEaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
 import {Banner} from '../../data-types/entitys/Banner';
 import BannersResult from '../../data-types/results/BannersResult';
 
@@ -12,7 +12,7 @@ import BannersResult from '../../data-types/results/BannersResult';
 export class BannerService {
 
   constructor(
-    @Inject(NeteaseCloudMusicApiPrefix) private neteaseCloudMusicApiPrefix: string,
+    @Inject(NetEaseCloudMusicApiPrefix) private netEaseCloudMusicApiPrefix: string,
     private http: HttpClient
   ) {
   }
@@ -22,7 +22,7 @@ export class BannerService {
   * 轮播图
   * */
   public getBanners(): Observable<Banner []> {
-    return this.http.get<BannersResult>(this.neteaseCloudMusicApiPrefix + '/banner?type=0').pipe<Banner[]>(
+    return this.http.get<BannersResult>(this.netEaseCloudMusicApiPrefix + '/banner?type=0').pipe<Banner[]>(
       map((res) => {
         if (200 === res.code && res.banners) {
           return res.banners;

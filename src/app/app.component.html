@@ -10,7 +10,7 @@
         </div>
         <div class="right">
           <ng-template #diyWySearchView let-searchTip="defaultSearchTip">
-              <input type="text" #searchInput nz-input [placeholder]="searchTip"/>
+            <input type="text" #searchInput nz-input [placeholder]="searchTip"/>
           </ng-template>
           <app-wy-search
             [customView]="diyWySearchView"
@@ -18,7 +18,7 @@
             [searchSuggestResult]="searchSuggestResult"
           ></app-wy-search>
           <div class="menber">
-            <div class="no-login">
+            <div class="no-login" *ngIf="!user else logined">
               <ul nz-menu nzTheme="dark" nzMode="horizontal">
                 <li nz-submenu>
                   <div title>
@@ -26,11 +26,11 @@
                     <i nz-icon nzType="down" nzTheme="outline"></i>
                   </div>
                   <ul>
-                    <li nz-menu-item>
+                    <li nz-menu-item (click)="openLayerModal(ModalType.LoginByPhone)">
                       <i nz-icon nzType="mobile" nzTheme="outline"></i>
                       手机登陆
                     </li>
-                    <li nz-menu-item>
+                    <li nz-menu-item (click)="openLayerModal(ModalType.Register)">
                       <i nz-icon nzType="user-add" nzTheme="outline"></i>
                       注册
                     </li>
@@ -38,6 +38,26 @@
                 </li>
               </ul>
             </div>
+            <ng-template #logined>
+              <div class="login">
+                <ul nz-menu nzMode="horizontal" nzTheme="dark">
+                  <li nz-submenu>
+                    <div title>
+                      <nz-avatar nzIcon="user" [nzSrc]="user?.profile?.avatarUrl"></nz-avatar>
+                      <i nz-icon type="down" nzTheme="outline"></i>
+                    </div>
+                    <ul>
+                      <li nz-menu-item>
+                        <i nz-icon nzType="user" nzTheme="outline"></i>我的主页
+                      </li>
+                      <li nz-menu-item (click)="logOut()">
+                        <i nz-icon  nzType="close-circle" nzTheme="outline"></i>退出
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </ng-template>
           </div>
         </div>
       </div>
@@ -51,6 +71,10 @@
       Ant Design @2021 Implement By Angular
     </nz-footer>
     <app-wy-player></app-wy-player>
+    <app-wy-layer-modal>
+      <app-wy-layer-login  name="LoginByPhone"></app-wy-layer-login>
+      <app-wy-layer-default name="default"></app-wy-layer-default>
+    </app-wy-layer-modal>
 
   </nz-layout>
 </div>

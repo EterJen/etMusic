@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {NeteaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
+import {NetEaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
 import {Song} from '../../data-types/entitys/Song';
 import {PlaylistTrack} from '../../data-types/entitys/PlaylistTrack';
 import {Observable} from 'rxjs';
@@ -18,7 +18,7 @@ export class SongService {
   constructor(
     private nzModalService: NzModalService,
     private http: HttpClient,
-    @Inject(NeteaseCloudMusicApiPrefix) private neteaseCloudMusicApiPrefix: string
+    @Inject(NetEaseCloudMusicApiPrefix) private netEaseCloudMusicApiPrefix: string
   ) {
   }
 
@@ -27,7 +27,7 @@ export class SongService {
    * */
   getSongsDetail(songIds: string): Observable<SongsDetail | null> {
     const params = new HttpParams().set('ids', songIds);
-    return this.http.get<SongsDetail>(this.neteaseCloudMusicApiPrefix + '/song/detail', {params}).pipe(
+    return this.http.get<SongsDetail>(this.netEaseCloudMusicApiPrefix + '/song/detail', {params}).pipe(
       map((res) => {
         if (200 === res.code) {
           return res;
@@ -43,7 +43,7 @@ export class SongService {
    * */
   getSongUrl(songIds: string): Observable<Song[]> {
     const params = new HttpParams().set('id', songIds);
-    return this.http.get<SongDetail>(this.neteaseCloudMusicApiPrefix + '/song/url', {params}).pipe<Song[]>(
+    return this.http.get<SongDetail>(this.netEaseCloudMusicApiPrefix + '/song/url', {params}).pipe<Song[]>(
       map((res) => {
         if (200 === res.code && res.data) {
           return res.data;
@@ -55,7 +55,7 @@ export class SongService {
 
   getLyric(songId: number): Observable<Lyric | null> {
     const params = new HttpParams().set('id', songId.toString());
-    return this.http.get<Lyric>(this.neteaseCloudMusicApiPrefix + '/lyric', {params}).pipe<Lyric | null>(
+    return this.http.get<Lyric>(this.netEaseCloudMusicApiPrefix + '/lyric', {params}).pipe<Lyric | null>(
       map((res) => {
         if (200 === res.code) {
           return res;

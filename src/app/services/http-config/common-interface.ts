@@ -9,6 +9,7 @@ export interface IErrorInfo {
   code?: number;
   message?: string;
   details?: string;
+  msg?: string;
   validationErrors?: IValidationErrorInfo[];
 }
 

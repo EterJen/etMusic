@@ -10,6 +10,7 @@ import {HomeRoutData} from './home-routing.module';
 import {SongSheetService} from '../../services/bz/songSheet.service';
 import * as _ from 'lodash';
 import {PlayerStoreService} from '../../app-store/player-store/player-store.service';
+import {WyLayerStoreService} from '../../app-store/wy-layer-store/wy-Layer-store.service';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +29,7 @@ export class HomeComponent implements OnInit {
     private route: ActivatedRoute,
     private songSheetService: SongSheetService,
     private playerStoreService: PlayerStoreService,
+    private wyLayerStoreService: WyLayerStoreService
   ) {
     this.route.data.subscribe((res: HomeRoutData) => {
       const resolverData = res.resolverData;
@@ -58,4 +60,7 @@ export class HomeComponent implements OnInit {
   }
 
 
+  openLoginModal(): void {
+    this.wyLayerStoreService.wyLayerModalDispatch();
+  }
 }

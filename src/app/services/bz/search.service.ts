@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {NeteaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
+import {NetEaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
 import {NzModalService} from 'ng-zorro-antd/modal';
@@ -14,7 +14,7 @@ export class SearchService {
   constructor(
     private nzModalService: NzModalService,
     private http: HttpClient,
-    @Inject(NeteaseCloudMusicApiPrefix) private neteaseCloudMusicApiPrefix: string
+    @Inject(NetEaseCloudMusicApiPrefix) private netEaseCloudMusicApiPrefix: string
   ) {
   }
 
@@ -23,7 +23,7 @@ export class SearchService {
    * */
   searchSuggest(keywords: string): Observable<SearchSuggestResult> {
     const params = new HttpParams().set('keywords', keywords);
-    return this.http.get<SearchSuggest>(this.neteaseCloudMusicApiPrefix + '/search/suggest', {params}).pipe(
+    return this.http.get<SearchSuggest>(this.netEaseCloudMusicApiPrefix + '/search/suggest', {params}).pipe(
       map((res) => {
         if (res.code !== 200) {
           res.result = {};

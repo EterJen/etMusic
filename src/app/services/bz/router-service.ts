@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {NeteaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
+import {NetEaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/internal/operators';
 import {NzModalService} from 'ng-zorro-antd/modal';

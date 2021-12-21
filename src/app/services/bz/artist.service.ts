@@ -5,7 +5,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import ArtistList from '../../data-types/results/ArtistList';
 import {Artist} from '../../data-types/entitys/Artist';
 import {ArtistQuery} from '../../data-types/params/ArtistQuery';
-import {NeteaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
+import {NetEaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
 import * as queryString from 'querystring';
 import ArtistDetail from '../../data-types/results/ArtistDetail';
 
@@ -14,7 +14,7 @@ import ArtistDetail from '../../data-types/results/ArtistDetail';
 })
 export class ArtistService {
   constructor(
-    @Inject(NeteaseCloudMusicApiPrefix) private neteaseCloudMusicApiPrefix: string,
+    @Inject(NetEaseCloudMusicApiPrefix) private netEaseCloudMusicApiPrefix: string,
     private http: HttpClient
   ) {
   }
@@ -25,7 +25,7 @@ export class ArtistService {
   artistList(artistQuery: ArtistQuery): Observable<Artist[]> {
     const paramsStr = queryString.stringify(JSON.parse(JSON.stringify(artistQuery)));
     const params = new HttpParams({fromString: paramsStr});
-    return this.http.get<ArtistList>(this.neteaseCloudMusicApiPrefix + '/artist/list', {params}).pipe<Artist[]>(
+    return this.http.get<ArtistList>(this.netEaseCloudMusicApiPrefix + '/artist/list', {params}).pipe<Artist[]>(
       map((res) => {
         if (200 === res.code && res.artists) {
           return res.artists;
@@ -40,14 +40,14 @@ export class ArtistService {
   * */
   artistDetail(artistId: number): Observable<ArtistDetail> {
     const params = new HttpParams().set('id', artistId.toString());
-    return this.http.get<ArtistDetail>(this.neteaseCloudMusicApiPrefix + '/artists', {params});
+    return this.http.get<ArtistDetail>(this.netEaseCloudMusicApiPrefix + '/artists', {params});
   }
   /*
    * 相似歌手
    * */
   simiArtists(artistId: number): Observable<Artist[]> {
     const params = new HttpParams().set('id', artistId.toString());
-    return this.http.get<Artist[]>(this.neteaseCloudMusicApiPrefix + '/simi/artist', {params});
+    return this.http.get<Artist[]>(this.netEaseCloudMusicApiPrefix + '/simi/artist', {params});
   }
 
 }

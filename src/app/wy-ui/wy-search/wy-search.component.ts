@@ -14,7 +14,7 @@ import {
 import {fromEvent} from 'rxjs';
 import {debounceTime, distinctUntilChanged, pluck} from 'rxjs/operators';
 import {SearchSuggestResult} from '../../data-types/results/SearchSuggest';
-import {CommonUtils} from '../../utils/CommonUtils';
+import {ObjUtils} from '../../utils/ObjUtils';
 import {Overlay, OverlayRef} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
 import {WySearchPanelComponent} from './wy-search-panle/wy-search-panel.component';
@@ -63,7 +63,7 @@ export class WySearchComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.searchSuggestResult && !changes.searchSuggestResult.firstChange) {
       const change = changes.searchSuggestResult.currentValue;
-      if (!CommonUtils.isEmptyObject(change)) {
+      if (!ObjUtils.isEmptyObject(change)) {
         this.showOverlayPanel();
       } else {
         this.hideOverlayPanel();
@@ -72,7 +72,7 @@ export class WySearchComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   focus(): void {
-    if (this.searchSuggestResult && CommonUtils.isNotEmptyObject(this.searchSuggestResult)) {
+    if (this.searchSuggestResult && ObjUtils.isNotEmptyObject(this.searchSuggestResult)) {
       this.showOverlayPanel();
     }
   }

@@ -1,4 +1,4 @@
-export class CommonUtils {
+export class ObjUtils {
   public static isEmptyObject(obj: any): boolean {
     return JSON.stringify(obj) === '{}';
   }

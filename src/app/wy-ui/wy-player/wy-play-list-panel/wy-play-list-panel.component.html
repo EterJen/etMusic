@@ -26,7 +26,7 @@
             <div class="col icons">
               <i class="ico like" title="收藏"></i>
               <i class="ico share" title="分享"></i>
-              <i class="ico trush" title="删除" (click)="removeSong.emit(item)"></i>
+              <i class="ico trush" title="删除" (click)="onRemoveSong($event, item)"></i>
             </div>
             <div class="singers clearfix ellipsis">
               <div class="singer-item" (click)="onViewSinger($event,item.id)"

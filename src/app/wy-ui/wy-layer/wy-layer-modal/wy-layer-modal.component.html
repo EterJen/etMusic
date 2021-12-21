@@ -1,0 +1,22 @@
+<!--也可以 多一种方法 <div class="m-layer" [hidden]="!showModal" #modalContainer>-->
+<!--<div class="m-layer" [style.visibility]="showModal? 'visible': 'hidden'" #modalContainer>-->
+<div class="m-layer"
+     #modalContainer
+     [@modalShowHideAMI] = "showModal"
+     cdkDrag
+     cdkDragBoundary=".cdk-overlay-container"
+>
+  <div class="zbar" cdkDragHandle>
+    <div class="zttl f-thide">这是标题</div>
+  </div>
+  <div class="zcls" (click)="hide()">关闭</div>
+  <!--内容插槽-->
+  <ng-container [ngSwitch]="modalType">
+    <ng-container *ngSwitchCase="ModalType.LoginByPhone">
+      <ng-content select="[name=LoginByPhone]" ></ng-content>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <ng-content select="[name=default]"></ng-content>
+    </ng-container>
+  </ng-container>
+</div>
