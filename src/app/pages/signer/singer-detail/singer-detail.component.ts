@@ -27,7 +27,7 @@ export class SingerDetailComponent implements OnInit, OnDestroy {
   ) {
     this.activatedRoute.data.subscribe((ngResolver: NgResolver) => {
       const resolver: SingerDetailResolverData = ngResolver.resolver;
-      console.log(resolver);
+      // console.log(resolver);
       this.artist = resolver.artist;
       this.hotSongs = resolver.hotSongs;
       this.simiArtists = resolver.simiArtists;

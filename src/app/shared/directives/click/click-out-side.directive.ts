@@ -27,7 +27,7 @@ export class ClickOutSideDirective implements OnChanges {
           * 也可以直接在被删除元素地方阻止冒泡 不会触发document click事件
           * */
           const isContain = this.elementRef.nativeElement.contains(event.target);
-          console.log('isContain', isContain);
+          // console.log('isContain', isContain);
           if (!isContain) {
             this.clickOutSide.emit();
           }

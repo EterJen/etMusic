@@ -11,6 +11,7 @@ export interface IErrorInfo {
   details?: string;
   msg?: string;
   validationErrors?: IValidationErrorInfo[];
+  [key: string]: any;
 }
 
 export interface IAjaxResponse {

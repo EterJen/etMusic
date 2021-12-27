@@ -6,6 +6,12 @@ export default class LoginInfo {
   public profile?: Profile;
   public bindings?: Bindings[];
   public cookie?: string;
+  public level?: string;
+}
+export class DailySignInRes{
+  code?: number;
+  point?: string;
+  msg?: string;
 }
 
 export class SampleBack {

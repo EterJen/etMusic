@@ -1,6 +1,42 @@
 <div class="member">
-  <div class="login" >
+  <div class="login" *ngIf="!loginInfo else logined" >
     <p>登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</p>
     <button nz-button (click)="userLogin.emit()" class="btn" >用户登陆</button>
   </div>
+  <ng-template #logined>
+    <div class="n-myinfo">
+      <div class="f-cb clearfix">
+        <div class="head">
+          <img [src]="loginInfo?.profile?.avatarUrl" [alt]="loginInfo?.profile?.nickname" >
+        </div>
+        <div class="info">
+          <h4><a  class="nm ellipsis">{{loginInfo?.profile?.nickname}}</a></h4>
+          <p class="lv">
+            <span class="u-lv u-icn2">
+              {{loginInfo?.level}}
+              <i class="lvright u-icn2"></i>
+            </span>
+          </p>
+          <div class="btnwrap f-pr">
+            <button nz-button nzType="primary" (click)="dailySignIn()" nzBlock>签到</button>
+          </div>
+        </div>
+      </div>
+
+      <ul class="dny clearfix">
+        <li class="fst">
+          <strong class="ellipsis">{{loginInfo?.profile?.eventCount}}</strong>
+          <span>动态</span>
+        </li>
+        <li >
+          <strong class="ellipsis">{{loginInfo?.profile?.follows}}</strong>
+          <span>关注</span>
+        </li>
+        <li class="lst">
+          <strong class="ellipsis">{{loginInfo?.profile?.followeds}}</strong>
+          <span>粉丝</span>
+        </li>
+      </ul>
+    </div>
+  </ng-template>
 </div>

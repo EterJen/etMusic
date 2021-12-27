@@ -91,7 +91,7 @@ export class SongService {
           this.nzModalService.confirm({
             nzTitle: '<i>目标歌曲不存在</i>',
             nzContent: '<b>Some descriptions</b>',
-            nzOnOk: () => console.log('OK')
+            // nzOnOk: () => console.log('OK')
           });
         }
       }

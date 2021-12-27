@@ -25,7 +25,7 @@ export class WyLayerLoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private memberService: MemberService,
     private wyUserStoreService: WyUserStoreService,
-    private nzMessageService: NzMessageService
+    private nzMessageService: NzMessageService,
   ) {
     /**
      * 可以嵌套 非常强大 自带校验
@@ -36,7 +36,7 @@ export class WyLayerLoginComponent implements OnInit {
         cellphoneLoginParams = {phone: '', password: '', setting: {remember: false}};
       }
       if (this.loginForm) {
-        this.loginForm.reset(); // 再次赋值前重置一下
+        this.loginForm.reset(); // 再次赋值前重置一下 否则第二次更新表单无效
       }
       this.loginForm = this.formBuilder.group({
         phone: [cellphoneLoginParams.phone, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
@@ -67,6 +67,7 @@ export class WyLayerLoginComponent implements OnInit {
           if (200 === res.code) {
             this.nzMessageService.success('登陆成功');
             this.memberService.storeUserId((res as LoginInfo)?.profile?.userId);
+            this.memberService.storeUserCookie((res as LoginInfo)?.cookie);
             const ifRemember = this.loginForm.get(['setting', 'remember'])?.value;
             let cellphoneLoginParams: CellphoneLoginParams = this.loginForm.value;
             if (true === ifRemember) {

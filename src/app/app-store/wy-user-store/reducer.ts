@@ -21,7 +21,7 @@ export const initialState: WyUserState = {
 const reducer = createReducer(
   initialState,
   on(flexSetUserState, (state, {...args}) => {
-    console.log(args.type, args);
+    // console.log(args.type, args);
     return ({...state, ...args});
   }),
 );

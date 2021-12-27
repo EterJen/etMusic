@@ -105,7 +105,7 @@ export class WyPlayerComponent implements OnInit {
     });
     this.playerStoreService.watchPlayingSong().subscribe((playingSong: PlaylistTrack) => {
       this.stopPlay();
-      console.log('当前播放歌曲：', playingSong);
+      // console.log('当前播放歌曲：', playingSong);
       if (!playingSong) {
         this.playingSong = playingSong;
         return;

@@ -26,7 +26,7 @@ export const initialState: WyLayerState = {
 const reducer = createReducer(
   initialState,
   on(flexSetLayerState, (state, {...args}) => {
-    console.log(args.type, args);
+    // console.log(args.type, args);
     return ({...state, ...args});
   }),
 );

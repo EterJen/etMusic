@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
   ) {
     this.route.data.subscribe((res: HomeRoutData) => {
       const resolverData = res.resolverData;
-      console.log(resolverData);
+      // console.log(resolverData);
       if (resolverData) {
         this.banners = resolverData.banners;
         this.hotTags = resolverData.hotTags;

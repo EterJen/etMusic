@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {NetEaseCloudMusicApiPrefix, ServiceModule} from '../service.module';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import LoginInfo, {SampleBack} from '../../data-types/results/LoginInfo';
+import LoginInfo, {DailySignInRes, SampleBack} from '../../data-types/results/LoginInfo';
 import {catchError, map} from 'rxjs/internal/operators';
 import {LocalStorageService} from '../common/local-storage.service';
 import {IErrorInfo} from '../http-config/common-interface';
@@ -22,13 +22,14 @@ export type CellphoneLoginParams = {
 export class MemberService {
   private userIdStoreKey = 'et-wy-userId';
   private cellphoneLoginInfoKey = 'et-wy-cellphoneLoginInfo';
+  private userCookieStoreKey = 'et-wy-userCookie';
 
   constructor(
     @Inject(NetEaseCloudMusicApiPrefix) private netEaseCloudMusicApiPrefix: string,
     private http: HttpClient,
     private localStorageService: LocalStorageService,
     private wyUserStoreService: WyUserStoreService,
-    private nzMessageService: NzMessageService
+    private nzMessageService: NzMessageService,
   ) {
   }
 
@@ -40,27 +41,43 @@ export class MemberService {
     );
   }
 
+  public dailySignIn(dsType = 0): Observable<DailySignInRes | IErrorInfo> {
+    return this.http.post<DailySignInRes | IErrorInfo>(this.netEaseCloudMusicApiPrefix + '/daily_signin', {
+      type: dsType,
+      cookie: this.localStorageService.getCryptoItem(this.userCookieStoreKey)
+    }, {responseType: 'json'}).pipe(
+      catchError((err: any, caught: any) => {
+        console.log(err);
+        return of(err.error as IErrorInfo);
+      })
+    );
+  }
+
   storeUserId(userId: number | undefined): void {
-    this.localStorageService.setItem(this.userIdStoreKey, userId);
+    this.localStorageService.setCryptoItem(this.userIdStoreKey, userId);
+  }
+
+  storeUserCookie(cookie: string | undefined): void {
+    this.localStorageService.setCryptoItem(this.userCookieStoreKey, cookie);
   }
 
   rememberCellphoneLogin(value: any): void {
-    this.localStorageService.setItem(this.cellphoneLoginInfoKey, value);
+    this.localStorageService.setCryptoItem(this.cellphoneLoginInfoKey, value);
   }
 
   forgetCellphoneLogin(): void {
-    this.localStorageService.removeItem(this.cellphoneLoginInfoKey);
+    this.localStorageService.removeCryptoItem(this.cellphoneLoginInfoKey);
   }
 
   initUserInfo(): void {
     this.getUserDetail().subscribe((res) => {
-      const cellphoneLoginParams: CellphoneLoginParams = this.localStorageService.getItem(this.cellphoneLoginInfoKey);
+      const cellphoneLoginParams: CellphoneLoginParams = this.localStorageService.getCryptoItem(this.cellphoneLoginInfoKey);
       this.wyUserStoreService.flexSet({loginInfo: res, cellphoneLoginParams});
     });
   }
 
   getUserDetail(): Observable<LoginInfo | null> {
-    const uid: string = this.localStorageService.getItem(this.userIdStoreKey);
+    const uid: string = this.localStorageService.getCryptoItem(this.userIdStoreKey);
     if (null != uid) {
       const params = new HttpParams({fromString: queryString.stringify({uid})});
       return this.http.get<LoginInfo>(this.netEaseCloudMusicApiPrefix + '/user/detail', {params}).pipe(
@@ -78,9 +95,9 @@ export class MemberService {
 
   logOut(): void {
     this.http.get<SampleBack>(this.netEaseCloudMusicApiPrefix + '/logout').subscribe((res) => {
-      console.log(res);
+      // console.log(res);
       this.nzMessageService.success('已退出');
-      this.localStorageService.removeItem(this.userIdStoreKey);
+      this.localStorageService.removeCryptoItem(this.userIdStoreKey);
       this.wyUserStoreService.flexSet({loginInfo: null});
     });
   }

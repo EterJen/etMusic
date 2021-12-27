@@ -20,8 +20,8 @@ export class DateUtils {
 
   public str2date(date: string): string {
 
-    console.log('日期转换：');
-    console.log(date);
+    // console.log('日期转换：');
+    // console.log(date);
 
 
     // 前台数据转换获得时间戳 传给后台
