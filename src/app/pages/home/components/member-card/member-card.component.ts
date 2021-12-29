@@ -2,7 +2,6 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {WyUserStoreService} from '../../../../app-store/wy-user-store/wy-user-store.service';
 import LoginInfo from '../../../../data-types/results/LoginInfo';
 import {MemberService} from '../../../../services/bz/member.service';
-import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-member-card',
@@ -12,11 +11,11 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 export class MemberCardComponent implements OnInit {
   @Output() userLogin = new EventEmitter<void>();
   public loginInfo!: LoginInfo | null;
+  public dailySignInMsg = '';
 
   constructor(
     private wyUserStoreService: WyUserStoreService,
     private memberService: MemberService,
-    private nzMessageService: NzMessageService,
   ) {
   }
 
@@ -30,10 +29,14 @@ export class MemberCardComponent implements OnInit {
   dailySignIn(): void {
     this.memberService.dailySignIn(1).subscribe((res) => {
       if (res.code === 200) {
-        this.nzMessageService.success('签到成功，积分+' + res.point);
+        this.dailySignInMsg = '签到成功，积分+' + res.point;
       } else {
-        this.nzMessageService.error('签到失败，' + res.msg);
+        this.dailySignInMsg = '签到失败，' + res.msg;
       }
     });
+  }
+
+  clearDailySignInMsg(): void {
+    this.dailySignInMsg = '';
   }
 }

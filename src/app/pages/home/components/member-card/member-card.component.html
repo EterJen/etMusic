@@ -17,7 +17,7 @@
               <i class="lvright u-icn2"></i>
             </span>
           </p>
-          <div class="btnwrap f-pr">
+          <div class="btnwrap f-pr" nz-tooltip="" nzTooltipPlacement="bottom" [nzTooltipTitle]="dailySignInMsg" [nzTooltipVisible]="dailySignInMsg.length > 0" (mouseleave)="clearDailySignInMsg()">
             <button nz-button nzType="primary" (click)="dailySignIn()" nzBlock>签到</button>
           </div>
         </div>

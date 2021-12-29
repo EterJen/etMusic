@@ -44,7 +44,8 @@ export class MemberService {
   public dailySignIn(dsType = 0): Observable<DailySignInRes | IErrorInfo> {
     return this.http.post<DailySignInRes | IErrorInfo>(this.netEaseCloudMusicApiPrefix + '/daily_signin', {
       type: dsType,
-      cookie: this.localStorageService.getCryptoItem(this.userCookieStoreKey)
+      // 通过 CommonInterceptor 拦截器设置 withCredentials: true 支持跨域自动携带cookie
+      // cookie: this.localStorageService.getCryptoItem(this.userCookieStoreKey)
     }, {responseType: 'json'}).pipe(
       catchError((err: any, caught: any) => {
         console.log(err);
