@@ -186,3 +186,16 @@ export class AppComponent {
     this.memberService.logOut();
   }
 }
+
+if (typeof Worker !== 'undefined') {
+  // Create a new
+  const worker = new Worker('./app.worker', { type: 'module' });
+  worker.onmessage = ({ data }) => {
+    console.log(`onmessage: ${data}`);
+    worker.terminate();
+  };
+  worker.postMessage('foo');
+} else {
+  // Web Workers are not supported in this environment.
+  // You should add a fallback so that your program still executes correctly.
+}
